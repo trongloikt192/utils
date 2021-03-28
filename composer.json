@@ -1,0 +1,21 @@
+{
+    "name": "trongloikt192/utils",
+    "description": "Utils package",
+    "type": "library",
+    "license": "proprietary",
+    "authors": [
+        {
+            "name": "trongloikt192",
+            "email": "trongloikt192@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "autoload": {
+        "psr-4": {
+            "trongloikt192\\Utils\\": "src/"
+        }
+    }
+    "require": {
+        "php": ">=5.6.0",
+    },
+}
