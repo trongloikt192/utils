@@ -11,6 +11,7 @@ namespace trongloikt192\Utils;
 use Carbon\Carbon;
 use Goutte\Client;
 use GuzzleHttp\Client as GuzzleClient;
+use Illuminate\Support\Facades\Cache;
 use Psr\Http\Message\ResponseInterface;
 use stdClass;
 use Symfony\Component\BrowserKit\Cookie;
@@ -26,7 +27,7 @@ class GetLinkFunction
     /**
      * Get short link Ouo
      *
-     * @param $link
+     * @param string $link
      * @param string $ip
      * @return string
      */
@@ -53,9 +54,7 @@ class GetLinkFunction
             $nextStackNumber = 0;
         }
         Cache::put($cacheKey, $nextStackNumber, Carbon::tomorrow());
-        $url = $providerList[$stackNumber];
-
-        return $url;
+        return $providerList[$stackNumber];
 
         /* UPDATE 2019-02-09 : Trả trực tiếp link, bỏ qua bước call api, để tăng tốc độ
          *
@@ -521,28 +520,6 @@ class GetLinkFunction
     }
 
     /**
-     * Chỉnh lại link cho chuẩn
-     *
-     * @param $link
-     * @return string
-     */
-    public static function reformatLink($link)
-    {
-        $provider = self::detectProviderFromLink($link);
-        $code     = self::detectCodeFromLink($link);
-
-        switch ($provider) {
-            case HOST_4SHARE_VN:
-                return "https://4share.vn/f/{$code}";
-            case HOST_FSHARE_VN:
-                return "https://fshare.vn/file/{$code}";
-            case HOST_GOOGLE_DRIVE_COM:
-                return "https://drive.google.com/file/d/{$code}";
-        }
-        return $link;
-    }
-
-    /**
      * @param $link
      * @return mixed|null
      */
@@ -591,23 +568,38 @@ class GetLinkFunction
             , HOST_GOOGLE_DRIVE_COM => ["/drive.google.com\/file\/d\/([0-9a-zA-Z-_=.]+)/", "/drive.google.com\/open\?id=([0-9a-zA-Z-_=.]+)/"]
         ];
 
-        foreach ($regex as $site => $arr) {
-            foreach ($arr as $rex) {
-                $match = null;
-                if (preg_match($rex, $link, $match) == 1) {
-                    $result['provider'] = $site;
+        foreach ($regex as $provider => $arrRegx) {
+            foreach ($arrRegx as $regx) {
+                if (preg_match($regx, $link, $match) == 1) {
+                    $result['provider'] = $provider;
                     $result['code']     = $match[1];
-                    break;
+                    $result['link']     = self::reformatLink($result['provider'], $result['code']) ?? $link;
+                    $result['status']   = TRUE;
+                    return $result;
                 }
             }
-
-            if ($result['provider'] !== null) {
-                $result['status'] = TRUE;
-                break;
-            }
         }
-
         return $result;
+    }
+
+    /**
+     * Chỉnh lại link cho chuẩn
+     *
+     * @param $provider
+     * @param $code
+     * @return string
+     */
+    public static function reformatLink($provider, $code)
+    {
+        switch ($provider) {
+            case HOST_4SHARE_VN:
+                return "https://4share.vn/f/{$code}";
+            case HOST_FSHARE_VN:
+                return "https://fshare.vn/file/{$code}";
+            case HOST_GOOGLE_DRIVE_COM:
+                return "https://drive.google.com/file/d/{$code}";
+        }
+        return null;
     }
 
     /**
@@ -643,45 +635,65 @@ class GetLinkFunction
                 break;
 
             default:
-                $file_headers = @get_headers($url);
+                $context      = stream_context_create([
+                    'ssl' => [
+                        'verify_peer'      => false,
+                        'verify_peer_name' => false,
+                    ],
+                ]);
+                $file_headers = get_headers($url, 1, $context);
                 break;
         }
 
-        // when server not found
-        if ($file_headers === false) {
+        if (empty($file_headers)) {
+            return false;
+        } // when server not found
+
+        // grabs the last $header $code, in case of redirect(s):
+        $maxRedirect = 10;
+        $index       = 0;
+        for ($index = 0; $index < $maxRedirect; $index++) {
+            if (isset($file_headers[$index])
+                && preg_match("/^HTTP.+\s(\d\d\d)\s/", $file_headers[$index], $m)) {
+                $code = $m[1];
+                if ($code == 200) {
+                    break;
+                }
+            }
+        }
+
+        if ($code != 200) {
             return false;
         }
 
-        // parse all headers:
-        foreach ($file_headers as $item) {
-            // corrects $url when 301/302 redirect(s) lead(s) to 200:
-            if (preg_match('/^Location: (http.+)$/', $item, $m)) {
-                $url         = $m[1];
-                $is_redirect = true;
-                // @TODO: Nếu redirect => đệ qui
-            }
-            // grabs the last $header $code, in case of redirect(s):
-            if (preg_match("/^HTTP.+\s(\d\d\d)\s/", $item, $m)) {
-                $code = $m[1];
-            }
-            if (preg_match('/Content-Disposition: (.*)/', $item, $m)) {
-                $header['content-disposition'] = trim($m[1]);
-            }
-            if (preg_match('/Content-Type: (.*)/', $item, $m)) {
-                $header['content-type'] = trim($m[1]);
-            }
-            if (preg_match('/Accept-Ranges: bytes/', $item)) {
-                $header['accept-ranges'] = 'bytes';
-            }
-            if ($code == 200
-                && empty($header['file_size_bytes'])
-                && preg_match("/Content-Length: (\d+)/", $item, $m)) {
-                $header['content-length'] = $m[1];
-            }
+        if (isset($file_headers['Location'])) {
+            $url = is_array($file_headers['Location'])
+                ? $file_headers['Location'][$index - 1]
+                : $file_headers['Location'];
         }
 
-        // $code 200 == all OK
-        return $code == 200;
+        if (isset($file_headers['Content-Disposition'])) {
+            $header['content-disposition'] = is_array($file_headers['Content-Disposition'])
+                ? trim($file_headers['Content-Disposition'][$index])
+                : trim($file_headers['Content-Disposition']);
+        }
+        if (isset($file_headers['Content-Type'])) {
+            $header['content-type'] = is_array($file_headers['Content-Type'])
+                ? trim($file_headers['Content-Type'][$index])
+                : trim($file_headers['Content-Type']);
+        }
+        if (isset($file_headers['Accept-Ranges'])) {
+            $header['accept-ranges'] = is_array($file_headers['Accept-Ranges'])
+                ? trim($file_headers['Accept-Ranges'][$index])
+                : trim($file_headers['Accept-Ranges']);
+        }
+        if (isset($file_headers['Content-Length']) && empty($header['file_size_bytes'])) {
+            $header['content-length'] = is_array($file_headers['Content-Length'])
+                ? trim($file_headers['Content-Length'][$index])
+                : trim($file_headers['Content-Length']);
+        }
+
+        return true;
     }
 
     /**
@@ -716,6 +728,35 @@ class GetLinkFunction
     }
 
     /**
+     * Get số lượng connection hiện tại của server
+     *
+     * @param $address
+     * @return mixed
+     */
+    public static function getCurrentConnectionNumOfServer($address)
+    {
+        $url_check = self::urlGetNumConnOfServer($address);
+        $ch        = curl_init($url_check);
+        curl_setopt($ch, CURLOPT_HEADER, false);    // we want headers
+        curl_setopt($ch, CURLOPT_NOBODY, false);    // we don't need body
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 10);
+        $numConnection = curl_exec($ch);
+        curl_close($ch);
+
+        return $numConnection;
+    }
+
+    /**
+     * @param $server
+     * @return string
+     */
+    public static function urlGetNumConnOfServer($server)
+    {
+        return 'http://' . $server . '/connections';
+    }
+
+    /**
      * @param $server
      * @return string
      */
@@ -726,15 +767,6 @@ class GetLinkFunction
         $vnlinks    = $domain[1];
         $net        = $domain[2];
         return $downloadxx . '-getlink.' . $vnlinks . '.' . $net . ':81';
-    }
-
-    /**
-     * @param $server
-     * @return string
-     */
-    public static function urlGetNumConnOfServer($server)
-    {
-        return 'http://' . $server . '/connections';
     }
 
     /**

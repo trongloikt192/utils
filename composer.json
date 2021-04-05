@@ -32,6 +32,7 @@
     "ext-curl": "*",
     "ext-fileinfo": "*",
     "ext-json": "*",
-    "ext-zip": "*"
+    "ext-zip": "*",
+    "ext-gd": "*"
   }
 }

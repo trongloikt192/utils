@@ -43,8 +43,10 @@ class ImageUtil
      *
      * @param array $imgURLList
      * @param string $storagePath
-     * @param bool $clearBeforeUp: Xoá tất cả trước khi upload image
+     * @param bool $clearBeforeUp : Xoá tất cả trước khi upload image
      * @return array|void
+     * @throws UtilException
+     * @throws \GuzzleHttp\Exception\GuzzleException
      * @throws \Exception
      */
     public static function grabImagesToFolder($imgURLList, $storagePath, $clearBeforeUp=false)

@@ -30,3 +30,8 @@ define('X_API_KEY_PREFIX', 'XApiKey:');
 // Post cover size
 define('POST_COVER_MAX_WIDTH'       , 800);
 define('POST_COVER_THUMB_WIDTH'     , 250);
+
+define('NEXT_SHORTURL_NUMBER_PREFIX'                , 'NextShorturl:'); // tomorrow
+define('NEXT_SERVER_AVAILABLE_NUMBER_PREFIX'        , 'NextSvAvail:'); // forever
+define('NEXT_PREMIUM_SERVER_AVAILABLE_NUMBER_PREFIX', 'NextPremiumSvAvail:'); // forever
+
