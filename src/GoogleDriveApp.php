@@ -41,7 +41,7 @@ use trongloikt192\Utils\Exceptions\UtilException;
  */
 class GoogleDriveApp
 {
-    public const APPLICATION_NAME = 'Vnlinks.net';
+    const APPLICATION_NAME = 'Vnlinks.net';
     protected $_CredentialsFile;
     protected $_TokenFile;
     protected $_ClientId;
@@ -627,7 +627,7 @@ class GoogleDriveApp
         $accessToken = $this->_Client->getAccessToken();
 
         $url = str_replace(array(':fileId', ':accessToken'), array($fileId, $accessToken['access_token']), $path);
-        $url = GetLinkFunction::g_getDirectLink($url);
+        $url = HttpUtil::g_getDirectLink($url);
 
         return $url;
     }
@@ -658,7 +658,7 @@ class GoogleDriveApp
             ],
             'isRequestJson' => true
         ];
-        $client     = GetLinkFunction::g_goutteRequest('POST', $reqURL, $reqParams, null, $reqOptions);
+        $client     = HttpUtil::g_goutteRequest('POST', $reqURL, $reqParams, null, $reqOptions);
         $signedURL  = $client->getResponse()->getHeader('Location');
 
         // when server not found
@@ -702,7 +702,7 @@ class GoogleDriveApp
         $accessToken = $this->_Client->getAccessToken();
 
         $reqURL = str_replace(array(':fileId', ':accessToken'), array($fileId, $accessToken['access_token']), $path);
-        $data   = GetLinkFunction::g_curlGet($reqURL);
+        $data   = HttpUtil::g_curlGet($reqURL);
 
         return json_decode($data, true);
     }

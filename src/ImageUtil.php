@@ -86,7 +86,7 @@ class ImageUtil
             self::resizeAndWatermark($tempPath, $imagePath, POST_COVER_MAX_WIDTH);
 
             // SYNC TO S3
-            [$s3FileURL, $s3FilePath, $s3Filename] = S3Util::upload($imagePath, $imgFolder);
+            list($s3FileURL, $s3FilePath, $s3Filename) = S3Util::upload($imagePath, $imgFolder);
 
             $replaceList[]  = ['origin' => $imgURL, 'newPath' => $s3FilePath, 'newURL' => $s3FileURL];
             $keepFileList[] = $s3FilePath;

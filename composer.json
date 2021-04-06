@@ -16,6 +16,9 @@
     },
     "files": [
       "src/config/constant.php",
+      "src/config/docs.php",
+      "src/config/getlink.php",
+      "src/config/mailbox.php",
       "src/config/helper.php"
     ]
   },
