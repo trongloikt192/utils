@@ -204,7 +204,7 @@ class GetLinkFunction
      */
     public static function getDomainGetLinkFromServerName($server)
     {
-        return 'https://' . $server . '/getlink';
+        return 'https://' . $server . '/getlink/api';
     }
 
     /**
