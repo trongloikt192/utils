@@ -200,11 +200,16 @@ class GetLinkFunction
 
     /**
      * @param $server
+     * @param null $path
      * @return string
      */
-    public static function getDomainGetLinkFromServerName($server)
+    public static function getDomainGetLinkFromServerName($server, $path=null)
     {
-        return 'http://' . $server . '/getlink/api';
+        $result = 'http://' . $server . '/getlink/api';
+        if (strlen($path) > 0) {
+            $result .= '/' . ltrim($path, '/');
+        }
+        return $result;
     }
 
     /**
