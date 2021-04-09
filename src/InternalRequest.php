@@ -48,7 +48,7 @@ class InternalRequest
      * @param $parameters
      * @return string
      */
-    private static function request($method, $url, $parameters=[])
+    public static function request($method, $url, $parameters=[])
     {
         $httpHeader = ['X-Api-Key' => XApiAuth::make()];
         $crawler = HttpUtil::g_goutteRequest($method, $url, $parameters, null, ['headers' => $httpHeader]);
