@@ -195,7 +195,7 @@ class GetLinkFunction
      */
     public static function urlGetNumConnOfServer($server)
     {
-        return 'https://' . $server . '/connections';
+        return 'http://' . $server . '/connections';
     }
 
     /**
@@ -204,7 +204,7 @@ class GetLinkFunction
      */
     public static function getDomainGetLinkFromServerName($server)
     {
-        return 'https://' . $server . '/getlink/api';
+        return 'http://' . $server . '/getlink/api';
     }
 
     /**
@@ -213,7 +213,7 @@ class GetLinkFunction
      */
     public static function urlGetBandwidthUsageOfServer($server)
     {
-        return 'https://' . $server . '/bandwidth';
+        return 'http://' . $server . '/bandwidth';
     }
 
     /**
@@ -222,10 +222,11 @@ class GetLinkFunction
      */
     public static function urlSaveDownloadInfoOfServer($server)
     {
-        return 'https://' . $server . '/generate';
+        return 'http://' . $server . '/generate';
     }
 
     /**
+     * Download link (SSL)
      * @param $server
      * @param $file_name
      * @param $download_key
