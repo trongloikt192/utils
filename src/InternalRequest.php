@@ -34,7 +34,7 @@ class InternalRequest
      * @param $code
      * @param $sendTo
      * @param $data
-     * @return string
+     * @return array
      */
     public static function mailbox($code, $sendTo, $data)
     {
@@ -46,12 +46,18 @@ class InternalRequest
      * @param $method
      * @param $url
      * @param $parameters
-     * @return string
+     * @return array [content, status code, headers]
      */
     public static function request($method, $url, $parameters=[])
     {
         $httpHeader = ['X-Api-Key' => XApiAuth::make()];
-        $crawler = HttpUtil::g_goutteRequest($method, $url, $parameters, null, ['headers' => $httpHeader]);
-        return $crawler->getResponse()->getContent();
+        $crawler    = HttpUtil::g_goutteRequest($method, $url, $parameters, null, ['headers' => $httpHeader]);
+        $response   = $crawler->getResponse();
+
+        return [
+            $response->getContent(),
+            $response->getStatusCode(),
+            $response->getHeaders()
+        ];
     }
 }
