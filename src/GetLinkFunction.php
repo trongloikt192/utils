@@ -199,13 +199,15 @@ class GetLinkFunction
     }
 
     /**
+     * Return getlink address
+     * http://download01.vnlinks.net:81/api/<path>
      * @param $server
-     * @param null $path
+     * @param null $path request-getlink, request-getlink-directly
      * @return string
      */
     public static function getDomainGetLinkFromServerName($server, $path=null)
     {
-        $result = 'http://' . $server . '/getlink/api';
+        $result = 'http://' . $server . ':81/api';
         if (strlen($path) > 0) {
             $result .= '/' . ltrim($path, '/');
         }
@@ -240,6 +242,6 @@ class GetLinkFunction
     public static function urlDownloadOfServer($server, $file_name, $download_key)
     {
         $file_name_encode = urlencode($file_name);
-        return 'https://' . $server . '/download/' . $download_key . '/' . $file_name_encode;
+        return 'http://' . $server . '/download/' . $download_key . '/' . $file_name_encode;
     }
 }
