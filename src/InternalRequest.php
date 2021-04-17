@@ -14,18 +14,12 @@ class InternalRequest
      * @param $method
      * @param $path
      * @param array $parameter
-     * @return string
+     * @return array
      */
-    public static function docsHTML($method, $path, $parameter = []): string
+    public static function docsHTML($method, $path, $parameter = []): array
     {
-        $url = env('X_API_DOCS_URL') . '/' . $path;
-        if (!empty($parameter)) {
-            $url .= '?' . http_build_query($parameter);
-        }
-        $option  = ['isRequestJson' => false,];
-
-        $client = HttpUtil::g_goutteRequest($method, $url, $parameter, null, $option);
-        return $client->getResponse()->getContent();
+        $url = env('X_API_DOCS_URL') . '/' . ltrim($path, '/');
+        return self::request($method, $url, $parameter);
     }
 
     /**
@@ -38,7 +32,7 @@ class InternalRequest
      */
     public static function master($method, $path, $parameter = [])
     {
-        $url = env('X_API_DOCS_URL') . '/' . ltrim($path, '/');
+        $url = env('X_API_MASTER_URL') . '/' . ltrim($path, '/');
         return self::request($method, $url, $parameter);
     }
 
