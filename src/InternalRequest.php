@@ -10,15 +10,17 @@ namespace trongloikt192\Utils;
 
 class InternalRequest
 {
+    const PREFIX_INTERNAL_API_PATH = '/api/internal';
+
     /**
-     * @param $method
-     * @param $path
+     * @param string $method
+     * @param string $path
      * @param array $parameter
      * @return array
      */
-    public static function docsHTML($method, $path, $parameter = []): array
+    public static function docs($method, $path, $parameter = []): array
     {
-        $url = env('X_API_DOCS_URL') . '/' . ltrim($path, '/');
+        $url = self::formatURL(env('X_API_DOCS_URL'), $path);
         return self::request($method, $url, $parameter);
     }
 
@@ -32,28 +34,29 @@ class InternalRequest
      */
     public static function master($method, $path, $parameter = [])
     {
-        $url = env('X_API_MASTER_URL') . '/' . ltrim($path, '/');
+        $url = self::formatURL(env('X_API_MASTER_URL'), $path);
         return self::request($method, $url, $parameter);
     }
 
     /**
      * Request to mailbox service for send email
      *
-     * @param $code
-     * @param $sendTo
-     * @param $data
+     * @param string $code
+     * @param array $sendTo
+     * @param array $data
      * @return array
      */
     public static function mailbox($code, $sendTo, $data)
     {
+        $url = self::formatURL(env('X_API_MAILBOX_URL'), '/send');
         $requestBody = compact('code', 'sendTo', 'data');
-        return self::request('POST', env('X_API_MAILBOX_URL'), $requestBody);
+        return self::request('POST', $url, $requestBody);
     }
 
     /**
-     * @param $method
-     * @param $url
-     * @param $parameters
+     * @param string $method
+     * @param string $url
+     * @param array $parameters
      * @return array [content, status code, headers]
      */
     public static function request($method, $url, $parameters=[])
@@ -67,5 +70,20 @@ class InternalRequest
             $response->getStatusCode(),
             $response->getHeaders()
         ];
+    }
+
+    /**
+     * Remove unnecessary slash
+     *
+     * @param string $domain
+     * @param string $path
+     * @return string
+     */
+    private static function formatURL($domain, $path)
+    {
+        $domain = rtrim($domain, '/');
+        $domain .= self::PREFIX_INTERNAL_API_PATH;
+        $domain .= ltrim($path, '/');
+        return $domain;
     }
 }
