@@ -18,7 +18,7 @@ class InternalRequest
      */
     public static function docsHTML($method, $path, $parameter = []): string
     {
-        $url = env('DOCS_API_ADDRESS') . '/' . $path;
+        $url = env('X_API_DOCS_URL') . '/' . $path;
         if (!empty($parameter)) {
             $url .= '?' . http_build_query($parameter);
         }
@@ -26,6 +26,20 @@ class InternalRequest
 
         $client = HttpUtil::g_goutteRequest($method, $url, $parameter, null, $option);
         return $client->getResponse()->getContent();
+    }
+
+    /**
+     * Request to master
+     *
+     * @param string $method
+     * @param string $path
+     * @param array $parameter
+     * @return array
+     */
+    public static function master($method, $path, $parameter = [])
+    {
+        $url = env('X_API_DOCS_URL') . '/' . ltrim($path, '/');
+        return self::request($method, $url, $parameter);
     }
 
     /**
@@ -39,7 +53,7 @@ class InternalRequest
     public static function mailbox($code, $sendTo, $data)
     {
         $requestBody = compact('code', 'sendTo', 'data');
-        return self::request('POST', env('MAILBOX_API_ADDRESS'), $requestBody);
+        return self::request('POST', env('X_API_MAILBOX_URL'), $requestBody);
     }
 
     /**
