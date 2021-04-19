@@ -39,6 +39,21 @@ class InternalRequest
     }
 
     /**
+     * Request to backup servers
+     *
+     * @param string $method
+     * @param string $serverAddress
+     * @param string $path
+     * @param array $parameter
+     * @return array
+     */
+    public static function backup($method, $serverAddress, $path, $parameter = [])
+    {
+        $url = self::formatURL($serverAddress, $path);
+        return self::request($method, $url, $parameter);
+    }
+
+    /**
      * Request to mailbox service for send email
      *
      * @param string $code
