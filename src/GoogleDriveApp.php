@@ -735,4 +735,18 @@ class GoogleDriveApp
 
         return $ret;
     }
+
+    /**
+     * Save gdrive token to file temp
+     *
+     * @param $tokenString
+     * @return string
+     */
+    public static function saveTokenFile($tokenString): string
+    {
+        $tokenFilePath = tempnam(sys_get_temp_dir(), 'gdrive-token-');
+        file_put_contents($tokenFilePath, $tokenString);
+
+        return $tokenFilePath;
+    }
 }
