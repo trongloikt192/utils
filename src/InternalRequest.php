@@ -10,7 +10,7 @@ namespace trongloikt192\Utils;
 
 class InternalRequest
 {
-    const PREFIX_INTERNAL_API_PATH = '/api/internal';
+    const PREFIX_INTERNAL_API_PATH = '/api/internal/';
 
     /**
      * @param string $method
