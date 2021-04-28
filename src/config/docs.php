@@ -1,5 +1,5 @@
 <?php
 
 // Post cover size
-define('POST_COVER_MAX_WIDTH'       , 800);
-define('POST_COVER_THUMB_WIDTH'     , 250);
+const POST_COVER_MAX_WIDTH = 800;
+const POST_COVER_THUMB_WIDTH = 250;

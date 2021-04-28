@@ -1,26 +1,26 @@
 <?php
 // Post status
-define('POST_STATUS_INIT'           , 'init');
-define('POST_STATUS_UPDATE'         , 'update');
-define('POST_STATUS_PENDING'        , 'pending');
-define('POST_STATUS_SYNCING'        , 'syncing');
-define('POST_STATUS_SYNC_ERR'       , 'sync-err');
-define('POST_STATUS_PUBLISHED'      , 'published');
-define('POST_STATUS_DRAFT'          , 'draft');
+const POST_STATUS_INIT = 'init';
+const POST_STATUS_UPDATE = 'update';
+const POST_STATUS_PENDING = 'pending';
+const POST_STATUS_SYNCING = 'syncing';
+const POST_STATUS_SYNC_ERR = 'sync-err';
+const POST_STATUS_PUBLISHED = 'published';
+const POST_STATUS_DRAFT = 'draft';
 
 // Job status
-define('JOB_STATUS_INITIAL'       , 0);
-define('JOB_STATUS_PENDING'       , 1);
-define('JOB_STATUS_PROCESSING'    , 2);
-define('JOB_STATUS_DONE'          , 3);
-define('JOB_STATUS_ERROR'         , 4);
+const JOB_STATUS_INITIAL = 0;
+const JOB_STATUS_PENDING = 1;
+const JOB_STATUS_PROCESSING = 2;
+const JOB_STATUS_DONE = 3;
+const JOB_STATUS_ERROR = 4;
 
 
 
 
 // Cache
 // check api valid, defend request from other site
-define('X_API_KEY_PREFIX', 'XApiKey:'); // tomorrow
+const X_API_KEY_PREFIX = 'XApiKey:'; // tomorrow
 
 
 
