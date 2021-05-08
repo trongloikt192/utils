@@ -69,6 +69,20 @@ class InternalRequest
     }
 
     /**
+     * Request to mailbox service for send email
+     *
+     * @param string $serverAddress
+     * @param string $path
+     * @param array $parameter
+     * @return array
+     */
+    public static function getlink($serverAddress, $path, $parameter)
+    {
+        $url = 'http://'.$serverAddress.':81'.self::PREFIX_INTERNAL_API_PATH.trim($path, '/');
+        return self::request('POST', $url, $parameter);
+    }
+
+    /**
      * @param string $method
      * @param string $url
      * @param array $parameters
