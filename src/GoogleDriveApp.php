@@ -619,17 +619,20 @@ class GoogleDriveApp
      * Return download link of fileId
      *
      * @param $fileId
-     * @return mixed|string
+     * @return array
      */
     public function getDownloadUrl($fileId)
     {
-        $path        = 'https://www.googleapis.com/drive/v3/files/:fileId?alt=media&access_token=:accessToken';
+        $path        = 'https://www.googleapis.com/drive/v3/files/:fileId?alt=media';
         $accessToken = $this->_Client->getAccessToken();
 
         $url = str_replace(array(':fileId', ':accessToken'), array($fileId, $accessToken['access_token']), $path);
-        $url = HttpUtil::g_getDirectLink($url);
+//        $downloadLink = GetLinkFunction::g_getDirectLink('https://drive.google.com/uc?id='.$fileId.'&export=download&access_token='.$accessToken['access_token']);
 
-        return $url;
+        return [
+            'Location'      => $url,
+            'Authorization' => 'Bearer ' . $accessToken['access_token']
+        ];
     }
 
     /**
