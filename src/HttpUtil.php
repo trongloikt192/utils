@@ -164,7 +164,7 @@ class HttpUtil
      * @param array $options
      * @return Client
      */
-    public static function g_goutteRequest($method, $url, $parameters, $cookie_jar = null, $options = array('redirect' => false, 'isRequestJson' => false, 'headers' => array(), 'proxy' => null, 'useIpv6' => false))
+    public static function g_goutteRequest($method, $url, $parameters=[], $cookie_jar=null, $options=['redirect' => false, 'isRequestJson' => false, 'headers' => [], 'proxy' => null, 'useIpv6' => false])
     {
         $redirect_url = '';
         $config       = array('debug' => false, 'timeout' => 10, 'http_errors' => false, 'verify' => false, 'cookies' => true);
@@ -416,31 +416,23 @@ class HttpUtil
     /**
      * Check Valid Url
      *
-     * @param $provider
      * @param $url
      * @param array $header
      * @param bool $is_redirect
      * @return bool
      */
-    public static function checkUrlValid($provider, &$url, &$header = array(), &$is_redirect = false)
+    public static function checkUrlValid(&$url, &$header = array(), &$is_redirect = false)
     {
         $code = null;
 
-        switch ($provider) {
-            case HOST_FSHARE_VN:
-                $file_headers = self::g_getHeader($url, 2);
-                break;
-
-            default:
-                $context      = stream_context_create([
-                    'ssl' => [
-                        'verify_peer'      => false,
-                        'verify_peer_name' => false,
-                    ],
-                ]);
-                $file_headers = get_headers($url, 1, $context);
-                break;
-        }
+        $context = stream_context_create([
+            'ssl' => [
+                'verify_peer'      => false,
+                'verify_peer_name' => false,
+            ],
+        ]);
+        $file_headers = get_headers($url, 1, $context);
+        //$file_headers = self::g_getHeader($url, 2);
 
         if (empty($file_headers)) {
             return false;
