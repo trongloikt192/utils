@@ -15,12 +15,14 @@ const JOB_STATUS_PROCESSING = 2;
 const JOB_STATUS_DONE = 3;
 const JOB_STATUS_ERROR = 4;
 
-
-
-
-// Cache
+/*===========================================================================*/
+/*                                   CACHE                                   */
+/*===========================================================================*/
 // check api valid, defend request from other site
 const X_API_KEY_PREFIX = 'XApiKey:'; // tomorrow
 
-
+// Environment .env name
+const ENVIRONMENT_LOCAL = 'local';
+const ENVIRONMENT_DEV   = 'development';
+const ENVIRONMENT_PROD  = 'production';
 
