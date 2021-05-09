@@ -242,6 +242,27 @@ class GetLinkFunction
     public static function urlDownloadOfServer($server, $file_name, $download_key)
     {
         $file_name_encode = urlencode($file_name);
-        return 'http://' . $server . '/download/' . $download_key . '/' . $file_name_encode;
+        return 'http://' . self::removeSchemeURL($server) . '/download/' . $download_key . '/' . $file_name_encode;
+    }
+
+    /**
+     * Remove scheme from URL
+     * Ex: https://192.168.0.1:8080 => 192.168.0.1:8080
+     *
+     * @param $url
+     * @return mixed
+     */
+    public static function removeSchemeURL($url)
+    {
+        $parse = parse_url($url);
+        $scheme = $parse['scheme'] ?? null;
+
+        // Skip if not exist scheme
+        if (!isset($scheme)) {
+            return $url;
+        }
+
+        // Remove scheme
+        return ltrim($url, $scheme . '://');
     }
 }

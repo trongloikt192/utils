@@ -78,7 +78,8 @@ class InternalRequest
      */
     public static function getlink($serverAddress, $path, $parameter)
     {
-        $url = $serverAddress.self::PREFIX_INTERNAL_API_PATH.trim($path, '/');
+        $serverAddress = GetLinkFunction::removeSchemeURL($serverAddress);
+        $url = 'http://'.$serverAddress.self::PREFIX_INTERNAL_API_PATH.trim($path, '/');
         return self::request('POST', $url, $parameter);
     }
 
