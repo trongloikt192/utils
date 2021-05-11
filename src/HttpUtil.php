@@ -201,6 +201,11 @@ class HttpUtil
             $cookies = self::goutteSetCookieJar($cookie_jar);
         }
 
+        // Fix Parameters are being ignored when sending a GET request
+        if (strtoupper($method) == 'GET' && !empty($parameters)) {
+            $url .= '?'.http_build_query($parameters);
+        }
+
         $guzzleClient = new GuzzleClient($config);
         $client       = new Client([], null, $cookies);
         $client->setClient($guzzleClient);
