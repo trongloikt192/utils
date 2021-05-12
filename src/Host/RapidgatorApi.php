@@ -13,7 +13,7 @@ use trongloikt192\Utils\Exceptions\UtilException;
 class RapidgatorApi
 {
     const BASE_URL     = 'https://rapidgator.net/api/v2/';
-    const AUTH_TIMEOUT = 400;
+    const AUTH_TIMEOUT = 0;
 
     const MODE_ID_PUBLIC       = 0;
     const MODE_ID_PREMIUM_ONLY = 1;
