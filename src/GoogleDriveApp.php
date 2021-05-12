@@ -59,7 +59,7 @@ class GoogleDriveApp
      * GoogleDriveApp constructor.
      * @param null $tokenFile : mục đích truy cập nhiều acc, mỗi acc có 1 file token riêng
      * @param $isInit
-     * @throws Exception
+     * @throws UtilException
      */
     public function __construct($tokenFile = null, $isInit = false)
     {
@@ -117,7 +117,7 @@ class GoogleDriveApp
      * @param $code
      *
      * @return array
-     * @throws Exception
+     * @throws UtilException
      */
     public function initialize($code = null)
     {
@@ -229,8 +229,7 @@ class GoogleDriveApp
      * @param string $newMimeType New MIME type for the file.
      * @return Google_Service_Drive_DriveFile
      *     an API error occurred.
-     * @throws Google_Exception
-     * @throws Exception
+     * @throws Google_Exception|UtilException
      */
     public function updateFile($fileId, $newTitle, $newDescription, $newMimeType)
     {
@@ -274,8 +273,7 @@ class GoogleDriveApp
      * @param string $path Đường dẫn đặt file
      * @param string $parentId ID thư mục chứa file
      * @return bool
-     * @throws Google_Exception
-     * @throws Exception
+     * @throws Google_Exception|UtilException
      */
     public function insertFile($title, $description, $source, $path = '', $parentId = null)
     {
@@ -486,8 +484,7 @@ class GoogleDriveApp
      * @param string $name : Tên thư mục cần tạo
      * @param string $inFolderId : Nằm trong thư mục có Id là inFolderId
      * @return string Id của folder được tạo
-     * @throws Google_Exception
-     * @throws Exception
+     * @throws Google_Exception|UtilException
      */
     public function createFolder($name, $inFolderId = null)
     {
@@ -550,8 +547,7 @@ class GoogleDriveApp
      *
      * @param String $fileId ID of the file to delete.
      * @return bool
-     * @throws Google_Exception
-     * @throws Exception
+     * @throws Google_Exception|UtilException
      */
     public function deleteFile($fileId)
     {
@@ -577,8 +573,7 @@ class GoogleDriveApp
      * @param string $fileId ID of the file to move.
      * @param string $newParentId Id of the folder to move to.
      * @return Google_Service_Drive_DriveFile The updated file. NULL is returned if an API error occurred.
-     * @throws Google_Exception
-     * @throws Exception
+     * @throws Google_Exception|UtilException
      */
     public function moveFile($fileId, $newParentId)
     {
