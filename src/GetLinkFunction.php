@@ -111,7 +111,7 @@ class GetLinkFunction
             , HOST_FILEFACTORY_COM  => ["/filefactory.com\/file\/([0-9a-zA-Z]+)/"]
             , HOST_FILENEXT_COM     => ["/filenext.com\/([0-9a-zA-Z]+)/"]
             , HOST_KEEP2SHARE_CC    => ["/keep2share.cc\/file\/([0-9a-zA-Z]+)/", "/k2s.cc\/file\/([0-9a-zA-Z]+)/", "/keep2s.cc\/file\/([0-9a-zA-Z]+)/", "/k2share.cc\/file\/([0-9a-zA-Z]+)/"]
-            , HOST_NITROFLARE_COM   => ["/nitroflare.com\/view\/([0-9a-zA-Z]+)/"]
+            , HOST_NITROFLARE_COM   => ["/nitroflare.com\/view\/([0-9a-zA-Z]+)/", '/nitro.download\/view\/([0-9a-zA-Z]+)/']
             , HOST_UPLOADED_NET     => ["/uploaded.net\/file\/([0-9a-zA-Z]+)/", "/uploaded.to\/file\/([0-9a-zA-Z]+)/", "/ul.to\/([0-9a-zA-Z]+)/"]
             , HOST_UPTOBOX_COM      => ["/uptobox.com\/([0-9a-zA-Z]+)/"]
             , HOST_RAPIDGATOR_NET   => ["/rapidgator.net\/file\/([0-9a-zA-Z]+)/", "/rg.to\/file\/([0-9a-zA-Z]+)/"]
