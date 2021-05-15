@@ -3,6 +3,7 @@
 
 namespace trongloikt192\Utils;
 
+use GuzzleHttp\Client;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
@@ -82,7 +83,7 @@ class ImageUtil
             $imagePath = $imgFolder . $tmpFilename;
 
             // 2. RESIZE + WATERMARK
-            Helper::grabImage($imgURL, $tempPath);
+            self::grabImage($imgURL, $tempPath);
             self::resizeAndWatermark($tempPath, $imagePath, POST_COVER_MAX_WIDTH);
 
             // SYNC TO S3
@@ -180,5 +181,61 @@ class ImageUtil
         }
 
         return $destinationPath;
+    }
+
+    /**
+     * @param string $url
+     * @param string $saveTo
+     * @param int $retry
+     * @return bool
+     */
+    public static function grabImageWithRetry($url, $saveTo, $retry = 0)
+    {
+        if ($retry > 5) {
+            return false;
+        }
+
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla 5.0');
+        curl_setopt($ch, CURLOPT_HEADER, TRUE);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+        curl_setopt($ch, CURLOPT_REFERER, 'https://www.google.com/');
+        curl_setopt($ch, CURLOPT_COOKIEFILE, './cookie.txt');
+        curl_setopt($ch, CURLOPT_COOKIEJAR, './cookie.txt');
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        $result = curl_exec($ch);
+        curl_close($ch);
+
+        // handling the follow redirect
+        if (preg_match('|Location: (https?://\S+)|', $result, $m)) {
+            return self::grabImageWithRetry($m[1], $saveTo, $retry + 1);
+        }
+
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_HEADER, 0);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_BINARYTRANSFER, 1);
+        $raw = curl_exec($ch);
+        curl_close($ch);
+        if (file_exists($saveTo)) {
+            unlink($saveTo);
+        }
+        $fp = fopen($saveTo, 'xb');
+        fwrite($fp, $raw);
+        fclose($fp);
+        return true;
+    }
+
+    /**
+     * @param $url
+     * @param $saveTo
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public static function grabImage($url, $saveTo)
+    {
+        $resource = fopen($saveTo, 'wb');
+        $client   = new Client();
+        $client->request('GET', $url, ['sink' => $resource]);
     }
 }
