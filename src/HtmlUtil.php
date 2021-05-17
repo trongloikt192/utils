@@ -130,4 +130,32 @@ class HtmlUtil
     {
         return Helper::formatBytes($bytes);
     }
+
+    /**
+     * Format minute to hour
+     * Ex:
+     * 90 => 1h 30m
+     * 120 => 2 hours
+     *
+     * @param $minutes
+     * @return string|null
+     */
+    public static function formatDuration($minutes)
+    {
+        if (strlen($minutes) <= 0) {
+            return null;
+        }
+
+        if ($minutes < 60) {
+            return $minutes . ' minutes';
+        }
+        $hours = floor( $minutes / 60);
+        $minutes = $minutes % 60;
+
+        if ($minutes == 0) {
+            return $hours . ' hours';
+        }
+
+        return $hours . 'h ' . $minutes . 'm';
+    }
 }
