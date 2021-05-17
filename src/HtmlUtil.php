@@ -170,7 +170,7 @@ class HtmlUtil
     public static function getStaticAsset($path)
     {
         // Nếu chuỗi path không bắt đầu bằng "uploads/" thì có thể là đường dẫn full (asset từ hệ thống khác)
-        if (preg_match('/^uploads\//', $path) === false) {
+        if (preg_match('/^uploads\//', $path) == false) {
             return $path;
         }
 
