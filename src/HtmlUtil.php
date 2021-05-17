@@ -158,4 +158,17 @@ class HtmlUtil
 
         return $hours . 'h ' . $minutes . 'm';
     }
+
+    /**
+     * Get full đường dẫn từ static-service
+     * Ex: path: uploads/post/1151/AVFfc0AqtoanbL8gxtFSyndHhL32xMNgLTtdDEou.jpg
+     * => https://static.roleplayvn.com/file-storage/uploads/post/1151/AVFfc0AqtoanbL8gxtFSyndHhL32xMNgLTtdDEou.jpg
+     *
+     * @param $path
+     * @return string
+     */
+    public static function getStaticAsset($path)
+    {
+        return env('MINIO_ENDPOINT') . '/' . env('MINIO_BUCKET') . '/' . $path;
+    }
 }
