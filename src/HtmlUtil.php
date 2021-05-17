@@ -117,4 +117,17 @@ class HtmlUtil
         return implode(', ', $arr);
     }
 
+    /**
+     * Chuyển số bytes thành định dạng lớn nhất
+     * Ex:
+     * 999999 -> 7.99 Mb
+     * 999999999 -> 7.99 Gb
+     *
+     * @param $bytes
+     * @return string
+     */
+    public static function formatSize($bytes)
+    {
+        return Helper::formatBytes($bytes);
+    }
 }
