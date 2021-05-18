@@ -167,7 +167,13 @@ class HttpUtil
     public static function g_goutteRequest($method, $url, $parameters=[], $cookie_jar=null, $options=['redirect' => false, 'isRequestJson' => false, 'headers' => [], 'proxy' => null, 'useIpv6' => false])
     {
         $redirect_url = '';
-        $config       = array('debug' => false, 'timeout' => 10, 'http_errors' => false, 'verify' => false, 'cookies' => true);
+        $config       = array(
+            'debug'       => false,
+            'timeout'     => 10,
+            'http_errors' => false,
+            'verify'      => false,
+            'cookies'     => true
+        );
 
         if (isset($options['proxy']) && !empty($options['proxy'])) {
             $config['proxy'] = ['http' => $options['proxy'], 'https' => $options['proxy']];
@@ -282,59 +288,14 @@ class HttpUtil
      * @param array $parameters HTTP parameters (POST, etc) to be sent URLencoded
      *                           or in JSON format.
      * @param null $cookie_jar
-     * @param null $proxy
      * @param array $options
      * @return Client
      */
-    public static function g_goutteRequestLogin($method, $url, $parameters, $cookie_jar = null, $proxy = null, $options = array('redirect' => false, 'isRequestJson' => false))
+    public static function g_goutteRequestLogin($method, $url, $parameters, $cookie_jar, $options=['redirect' => false, 'isRequestJson' => false, 'headers' => [], 'proxy' => null, 'useIpv6' => false])
     {
-        $redirect_url = '';
-        $config       = array('debug' => false, 'timeout' => 10, 'http_errors' => false, 'verify' => false, 'cookies' => true);
+        $client = self::g_goutteRequest($method, $url, $parameters, $cookie_jar, $options);
 
-        if (isset($proxy)) {
-            $config['proxy'] = ['http' => $proxy, 'https' => $proxy];
-        }
-
-        if (isset($options['redirect']) && $options['redirect'] == true) {
-            $config['allow_redirects'] = false;
-            $config['on_headers']      = static function (ResponseInterface $response) use (&$redirect_url) {
-                $statusCode = $response->getStatusCode();
-                if ($statusCode == 301 || $statusCode == 302) {
-                    $redirect_url = $response->getHeaderLine('Location');
-                    throw new UtilException('Redirect url!');
-                }
-
-                if (!empty($redirect_url)) {
-                    throw new UtilException('Error Processing Request');
-                }
-            };
-        }
-
-        if (isset($options['useIpv6']) && $options['useIpv6'] == true) {
-            $config['force_ip_resolve'] = 'v6';
-        }
-
-        if (!is_array($parameters)) {
-            $parameters = array();
-        }
-
-        $cookies = null;
-        if (isset($cookie_jar)) {
-            $cookies = self::goutteSetCookieJar($cookie_jar);
-        }
-
-        $guzzleClient = new GuzzleClient($config);
-        $client       = new Client([], null, $cookies);
-        $client->setClient($guzzleClient);
-        $client->setHeader('User-Agent', 'Mozilla/5.0 (Windows NT 10.0; WOW64; rv:46.0) Gecko/20100101 Firefox/46.0');
-        $client->setHeader('Accept-Language', 'en');
-
-        if (isset($options['isRequestJson']) && $options['isRequestJson'] == true) {
-            $client->request($method, $url, array(), array(), array('HTTP_CONTENT_TYPE' => 'application/json'), json_encode($parameters));
-        } else {
-            $client->request($method, $url, $parameters);
-        }
-
+        // Save cookies to file
         if (isset($cookie_jar)) {
             self::goutteSaveCookieJar($client, $cookie_jar);
         }
@@ -413,6 +374,7 @@ class HttpUtil
             $form = $crawler->filter('form')->form();
         }
         $client->submit($form, $params);
+
         self::goutteSaveCookieJar($client, $cookie_jar);
 
         return $client;
