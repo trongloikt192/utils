@@ -384,13 +384,12 @@ class HttpUtil
      * Check Valid Url
      *
      * @param $url
-     * @param array $header
-     * @param bool $is_redirect
-     * @return bool
+     * @return array
      */
-    public static function checkUrlValid(&$url, &$header = array(), &$is_redirect = false)
+    public static function getHeader(&$url)
     {
         $code = null;
+        $header = [];
 
         $context = stream_context_create([
             'ssl' => [
@@ -398,16 +397,16 @@ class HttpUtil
                 'verify_peer_name' => false,
             ],
         ]);
-        $file_headers = get_headers($url, 1, $context);
+        $file_headers = get_headers($url, true, $context);
         //$file_headers = self::g_getHeader($url, 2);
 
+        // when server not found
         if (empty($file_headers)) {
-            return false;
-        } // when server not found
+            return null;
+        }
 
         // grabs the last $header $code, in case of redirect(s):
         $maxRedirect = 10;
-        $index       = 0;
         for ($index = 0; $index < $maxRedirect; $index++) {
             if (isset($file_headers[$index])
                 && preg_match("/^HTTP.+\s(\d\d\d)\s/", $file_headers[$index], $m)) {
@@ -419,7 +418,7 @@ class HttpUtil
         }
 
         if ($code != 200) {
-            return false;
+            return null;
         }
 
         if (isset($file_headers['Location'])) {
@@ -449,7 +448,7 @@ class HttpUtil
                 : trim($file_headers['Content-Length']);
         }
 
-        return true;
+        return $header;
     }
 
     /**
