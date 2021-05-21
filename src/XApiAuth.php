@@ -56,7 +56,6 @@ class XApiAuth
         $secretKey = env('X_API_SECRET_KEY');
         $msg       = $secretKey .':'. round(microtime(true) * 1000);
         $msgBase64 = base64_encode($msg);
-
         $encoded = '';
         for ($i = 0, $iMax = strlen($msgBase64); $i < $iMax; $i++) {
             $a       = ord($msgBase64[$i]);

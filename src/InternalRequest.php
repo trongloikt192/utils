@@ -54,6 +54,20 @@ class InternalRequest
     }
 
     /**
+     * Request to cache servers
+     *
+     * @param string $method
+     * @param string $serverAddress
+     * @param string $path
+     * @param array $parameter
+     * @return array
+     */
+    public static function cache($method, $serverAddress, $path, $parameter = [])
+    {
+        return self::backup($method, $serverAddress, $path, $parameter);
+    }
+
+    /**
      * Request to mailbox service for send email
      *
      * @param string $code

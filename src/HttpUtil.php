@@ -251,7 +251,7 @@ class HttpUtil
 
         if (is_file($cookie_jar)) {
             // Load cookies and populate browserkit's cookie jar
-            $cookie_array = json_decode(file_get_contents($cookie_jar), 1);
+            $cookie_array = json_decode(file_get_contents($cookie_jar), true);
 
             foreach ($cookie_array as $ck) {
                 $name     = $ck['name'];
