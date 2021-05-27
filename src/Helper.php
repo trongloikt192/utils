@@ -9,36 +9,59 @@ class Helper
 {
     /**
      * @param string $folder
-     * @param string $fileName
+     * @param boolean $relativePath
      * @return string
      */
-    public static function getUploadsPath($folder = '', $fileName = '')
+    public static function getUploadsPath($folder = null, $relativePath = false)
     {
-        $folder = public_path("uploads/{$folder}/");
-        if (!file_exists($folder)) {
-            if (!mkdir($folder, 0775, true) && !is_dir($folder)) {
-                throw new RuntimeException(sprintf('Directory "%s" was not created', $folder));
-            }
-            chmod($folder, 0775);
+        $publicPath = public_path();
+        $uploadDir  = $publicPath .'/uploads';
+        if (strlen($folder) > 0) {
+            $uploadDir .= '/'.trim($folder, '/');
         }
-        return $folder . $fileName;
+        // Create folder if not exists
+        self::createDir($uploadDir);
+
+        return $relativePath == true
+            ? str_replace($publicPath.'/', null, $uploadDir)
+            : $uploadDir;
     }
 
     /**
      * @param string $folder
-     * @param string $fileName
+     * @param boolean $relativePath
      * @return string
      */
-    public static function getDownloadsPath($folder = '', $fileName = '')
+    public static function getDownloadsPath($folder = null, $relativePath = false)
     {
-        $folder = public_path("downloads/{$folder}/");
-        if (!file_exists($folder)) {
-            if (!mkdir($folder, 0775, true) && !is_dir($folder)) {
-                throw new RuntimeException(sprintf('Directory "%s" was not created', $folder));
-            }
-            chmod($folder, 0775);
+        $publicPath  = public_path();
+        $downloadDir = $publicPath .'/downloads';
+        if (strlen($folder) > 0) {
+            $downloadDir .= '/'.trim($folder, '/');
         }
-        return $folder . $fileName;
+        // Create folder if not exists
+        self::createDir($downloadDir);
+
+        return $relativePath == true
+            ? str_replace($publicPath.'/', null, $downloadDir)
+            : $downloadDir;
+    }
+
+    /**
+     * @param $folder
+     * @return mixed
+     */
+    public static function createDir($folder)
+    {
+        if (file_exists($folder)) {
+            return $folder;
+        }
+
+        if (!mkdir($folder, 0775, true) && !is_dir($folder)) {
+            throw new RuntimeException(sprintf('Directory "%s" was not created', $folder));
+        }
+        chmod($folder, 0775);
+        return $folder;
     }
 
     /**
@@ -227,11 +250,17 @@ class Helper
             return null;
         }
 
-        if (strpos($url, 'http://') === false && strpos($url, 'https://') === false) {
+        // Ghép thêm $webpage vào những image lấy từ $webpage khác, chỉ có relative path, ko có full url
+        if (strlen($webpage) > 0 && strpos($url, 'http://') === false && strpos($url, 'https://') === false) {
             $url   = ltrim($url, '/');
             $parse = parse_url($webpage);
-            $url   = $parse['scheme'] . '://' . $parse['host'] . '/' . $url;
+            if (!isset($parse['scheme']) || !isset($parse['host'])) {
+                return $url;
+            }
+
+            $url = $parse['scheme'] . '://' . $parse['host'] . '/' . $url;
         }
+
         return $url;
     }
 

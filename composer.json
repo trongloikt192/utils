@@ -16,14 +16,13 @@
     },
     "files": [
       "src/config/constant.php",
-      "src/config/docs.php",
       "src/config/getlink.php",
       "src/config/mailbox.php",
       "src/config/helper.php"
     ]
   },
   "require": {
-    "php": ">=7.0.0",
+    "php": ">=7.1.0",
     "laravel/framework": ">=5.5.0",
 
     "fabpot/goutte": "~3.2.3",
@@ -31,6 +30,7 @@
     "google/apiclient": "~2.2.3",
     "google/apiclient-services": "~0.13",
     "intervention/image": "~2.4",
+    "tinify/tinify": "dev-master",
 
     "ext-curl": "*",
     "ext-fileinfo": "*",

@@ -23,7 +23,7 @@ class PathUtil
      */
     public static function postImgPath($postId): string
     {
-        return "uploads/post/{$postId}/images";
+        return "uploads/post/{$postId}/img";
     }
 
 }

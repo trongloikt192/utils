@@ -167,13 +167,28 @@ class HtmlUtil
      * @param $path
      * @return string
      */
-    public static function getStaticAsset($path)
+    public static function dispStaticImg($path)
     {
-        // Nếu chuỗi path không bắt đầu bằng "uploads/" thì có thể là đường dẫn full (asset từ hệ thống khác)
-        if (preg_match('/^uploads\//', $path) == false) {
+        // Nếu chuỗi path không bắt đầu bằng "http" thì có thể là đường dẫn full (asset từ hệ thống khác)
+        if (strpos($path, 'http') !== false) {
             return $path;
         }
 
-        return env('MINIO_ENDPOINT') . '/' . env('MINIO_BUCKET') . '/' . $path;
+        return env('MINIO_ENDPOINT') .'/'. env('MINIO_BUCKET') .'/'. sprintf($path, DISP_MD);
+    }
+
+    /**
+     * Ráp full địa chỉ url cho những image trong post content
+     *
+     * @param $content
+     * @return array|string|string[]|null
+     */
+    public static function replaceImgInContent($content)
+    {
+        $minio   = env('MINIO_ENDPOINT') . '/' . env('MINIO_BUCKET');
+        $search  = '/(uploads\/post\/\d+\/img\/disp\/content\/\w+)%s(\.\w+)/';
+        $replace = $minio . '/$1' . DISP_MD . '$2';
+
+        return preg_replace($search, $replace, $content);
     }
 }
