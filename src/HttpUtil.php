@@ -396,6 +396,9 @@ class HttpUtil
                 'verify_peer'      => false,
                 'verify_peer_name' => false,
             ],
+            'http' => [
+                'timeout' => 3
+            ]
         ]);
         $file_headers = get_headers($url, true, $context);
         //$file_headers = self::g_getHeader($url, 2);
