@@ -195,7 +195,7 @@ class GetLinkFunction
      */
     public static function urlGetNumConnOfServer($server)
     {
-        return 'http://' . $server . '/connections';
+        return 'https://' . $server . '/connections';
     }
 
     /**
@@ -220,7 +220,7 @@ class GetLinkFunction
      */
     public static function urlGetBandwidthUsageOfServer($server)
     {
-        return 'http://' . $server . '/bandwidth';
+        return 'https://' . $server . '/bandwidth';
     }
 
     /**
@@ -229,7 +229,7 @@ class GetLinkFunction
      */
     public static function urlSaveDownloadInfoOfServer($server)
     {
-        return 'http://' . $server . '/generate';
+        return 'https://' . $server . '/generate';
     }
 
     /**
@@ -242,7 +242,7 @@ class GetLinkFunction
     public static function urlDownloadOfServer($server, $file_name, $download_key)
     {
         $file_name_encode = urlencode($file_name);
-        return 'http://' . self::removeSchemeURL($server) . '/download/' . $download_key . '/' . $file_name_encode;
+        return 'https://' . self::removeSchemeURL($server) . '/download/' . $download_key . '/' . $file_name_encode;
     }
 
     /**
