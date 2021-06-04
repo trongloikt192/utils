@@ -228,6 +228,41 @@ class Helper
     }
 
     /**
+     * Trả về size MB
+     *
+     * @param string $fileSizeStr
+     * @return float|int
+     */
+    public static function getSizeMB($fileSizeStr)
+    {
+        // Qui tất cả out->fileSize về dạng số (đơn vị MB)
+        $sizeType = substr($fileSizeStr, -2);
+        $size     = trim(str_replace($sizeType, '', $fileSizeStr));
+        $size     = str_replace(' ', '', $size);
+        $size     = (float)$size;
+        switch (strtoupper($sizeType)) {
+            case 'GB':
+                $fileSizeMB = $size * 1024;
+                break;
+
+            case 'MB':
+                $fileSizeMB = $size;
+                break;
+
+            case 'KB':
+
+                $fileSizeMB = 1;
+                break;
+
+            default:
+                $fileSizeMB = 0;
+                break;
+        }
+
+        return $fileSizeMB;
+    }
+
+    /**
      * @param $url
      * @return bool
      */
