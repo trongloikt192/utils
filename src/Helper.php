@@ -302,7 +302,7 @@ class Helper
     /**
      * @return bool
      */
-    function isChrome()
+    public static function isChrome()
     {
         $agent = $_SERVER['HTTP_USER_AGENT'];
         if (preg_match("/like\sGecko\)\sChrome\//", $agent)) {    // if user agent is google chrome
@@ -310,5 +310,26 @@ class Helper
                 return true;
         }
         return false; // if isn't chrome return false
+    }
+
+    /**
+     * encode URLs
+     * input:   http://www.example.com/Data/image/office-dôn-sì-à.jpg
+     * returns: http://www.example.com/Data/image/office-d%25C3%25B4n-s%25C3%25AC-%25C3%25A0.jpg
+     * @param string $url
+     * @return string
+     */
+    public static function urlEncodeBasename($url)
+    {
+        /*
+        // encode URLs according to RFC 3986.
+        $entities     = array('%21', '%2A', '%27', '%28', '%29', '%3B', '%3A', '%40', '%26', '%3D', '%2B', '%24', '%2C', '%2F', '%3F', '%25', '%23', '%5B', '%5D');
+        $replacements = array('!', '*', "'", '(', ')', ';', ':', '@', '&', '=', '+', '$', ',', '/', '?', '%', '#', '[', ']');
+        return str_replace($entities, $replacements, urlencode($string));
+        */
+
+        $url  = explode('/', $url);
+        $base = array_pop($url);
+        return implode('/', $url) . '/' . urlencode($base);
     }
 }
