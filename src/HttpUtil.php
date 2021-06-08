@@ -169,7 +169,7 @@ class HttpUtil
         $redirect_url = '';
         $config       = array(
             'debug'       => false,
-            'timeout'     => 10,
+            'timeout'     => 30,
             'http_errors' => false,
             'verify'      => false,
             'cookies'     => true
@@ -397,7 +397,7 @@ class HttpUtil
                 'verify_peer_name' => false,
             ],
             'http' => [
-                'timeout' => 3,
+                'timeout' => 10,
                 'header'  => "User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.2) Gecko/20070219 Firefox/2.0.0.2'\r\n"
             ]
         ]);
