@@ -169,7 +169,7 @@ class HttpUtil
         $redirect_url = '';
         $config       = array(
             'debug'       => false,
-            'timeout'     => 10,
+            'timeout'     => 30,
             'http_errors' => false,
             'verify'      => false,
             'cookies'     => true
