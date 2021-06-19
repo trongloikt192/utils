@@ -25,16 +25,36 @@ class RapidgatorApi
     const UPLOAD_STATE_DONE       = 2;
     const UPLOAD_STATE_FAIL       = 3;
 
-    protected $_ch               = null;
+    protected $_ch = null;
     protected $_token;
     protected $_login;
     protected $_password;
     protected $_last_access_time = 0;
 
-    public function __construct($login = null, $password = null)
+    /**
+     * @param $login
+     * @param $password
+     * @param $token_file
+     * @throws UtilException
+     */
+    public function __construct($login, $password, $token_file)
     {
-        if (!empty($login)) {
+        // Get token, it's storage in file
+        $this->_token = @file_get_contents($token_file);
+
+        // Login if token null
+        if (empty($this->_token)) {
             $this->login($login, $password);
+            file_put_contents($token_file, $this->_token);
+            return;
+        }
+
+        // Check token & re-login if token expire
+        try {
+            $this->getUserInfo();
+        } catch (UtilException $e) {
+            $this->login($login, $password);
+            file_put_contents($token_file, $this->_token);
         }
     }
 
@@ -66,12 +86,12 @@ class RapidgatorApi
      */
     protected function _process($method, array $data = [])
     {
-        if ($method != 'user/login' && !empty($this->_token)) {
+        /*if ($method != 'user/login' && !empty($this->_token)) {
             if (time() - $this->_last_access_time > self::AUTH_TIMEOUT) {
                 $this->_token = null;
                 $this->login($this->_login, $this->_password);
             }
-        }
+        }*/
 
         if ($this->_ch === null) {
             $this->_ch = curl_init();
