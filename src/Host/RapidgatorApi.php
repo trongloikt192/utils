@@ -12,8 +12,7 @@ use trongloikt192\Utils\Exceptions\UtilException;
  */
 class RapidgatorApi
 {
-    const BASE_URL     = 'https://rapidgator.net/api/v2/';
-    const AUTH_TIMEOUT = 0;
+    const BASE_URL = 'https://rapidgator.net/api/v2/';
 
     const MODE_ID_PUBLIC       = 0;
     const MODE_ID_PREMIUM_ONLY = 1;
@@ -29,7 +28,6 @@ class RapidgatorApi
     protected $_token;
     protected $_login;
     protected $_password;
-    protected $_last_access_time = 0;
 
     /**
      * @param $login
@@ -69,11 +67,14 @@ class RapidgatorApi
      */
     public function login($login, $password)
     {
-        $response                = $this->_process('user/login', ['login' => $login, 'password' => $password]);
-        $this->_token            = $response->token;
-        $this->_login            = $login;
-        $this->_password         = $password;
-        $this->_last_access_time = time();
+        // clear old token
+        $this->_token = null;
+
+        // get new token
+        $response        = $this->_process('user/login', ['login' => $login, 'password' => $password]);
+        $this->_token    = $response->token;
+        $this->_login    = $login;
+        $this->_password = $password;
 
         return $response;
     }
