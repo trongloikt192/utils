@@ -332,4 +332,15 @@ class Helper
         $base = array_pop($url);
         return implode('/', $url) . '/' . urlencode($base);
     }
+
+    /**
+     * Generate hex color from a string any
+     * @param $str
+     * @return false|string
+     */
+    public static function stringToColorCode($str) {
+        $code = dechex(crc32($str));
+        $code = substr($code, 0, 6);
+        return $code ? '#'.$code : $code;
+    }
 }
