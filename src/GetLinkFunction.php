@@ -245,7 +245,7 @@ class GetLinkFunction
      */
     public static function urlDownloadOfServer($server, $file_name, $download_key)
     {
-        $file_name_encode = urlencode($file_name);
+        $file_name_encode = rawurlencode($file_name);
         return 'https://' . self::removeSchemeURL($server) . '/download/' . $download_key . '/' . $file_name_encode;
     }
 

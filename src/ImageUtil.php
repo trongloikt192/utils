@@ -5,8 +5,6 @@ namespace trongloikt192\Utils;
 
 use GuzzleHttp\Client;
 use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Storage;
 use Intervention\Image\ImageManagerStatic as Image;
 use trongloikt192\Utils\Exceptions\UtilException;
 
