@@ -119,7 +119,7 @@ class GetLinkFunction
             , HOST_UPTOBOX_COM      => ["/uptobox.com\/([0-9a-zA-Z]+)/"]
             , HOST_PREFILES_COM     => ["/prefiles.com\/([0-9a-zA-Z]+)/"]
             , HOST_RAPIDGATOR_NET   => ["/rapidgator.net\/file\/([0-9a-zA-Z]+)/", "/rg.to\/file\/([0-9a-zA-Z]+)/"]
-            , HOST_TURBOBIT_NET     => ["/turbobit.net\/([0-9a-zA-Z]+\.html)/", "/turboget.net\/([0-9a-zA-Z]+\.html)/"]
+            , HOST_TURBOBIT_NET => ['/turbobit.net\/([0-9a-zA-Z]+\.html)/', '/turboget.net\/([0-9a-zA-Z]+\.html)/', '/turb.cc\/([0-9a-zA-Z]+\.html)/']
             , HOST_NHACCUATUI_COM   => ["/nhaccuatui\.com\/bai\-hat\/.*\.([0-9a-zA-Z]+)\.html/", "/nhaccuatui\.com\/video\/.*\.([0-9a-zA-Z]+)\.html/", "/nhaccuatui\.com\/playlist\/.*\.([0-9a-zA-Z]+)\.html/"]
             , HOST_1FICHIER_COM     => ["/1fichier.com\/\?([0-9a-zA-Z]+)/"]
             , HOST_GOOGLE_DRIVE_COM => ["/drive.google.com\/file\/d\/([0-9a-zA-Z-_=.]+)/", "/drive.google.com\/open\?id=([0-9a-zA-Z-_=.]+)/"]
