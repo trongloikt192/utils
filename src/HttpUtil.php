@@ -134,7 +134,7 @@ class HttpUtil
         $urlInfo = parse_url($url);
         $out     = "GET  {$url} HTTP/1.1\r\n";
         $out     .= "Host: {$urlInfo['host']}\r\n";
-        $out     .= "User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.6) Gecko/20070725 Firefox/2.0.0.6\r\n";
+        $out     .= "User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 11_2_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.141 Safari/537.36 Edg/87.0.664.75\r\n";
         $out     .= "Connection: Close\r\n\r\n";
         $con     = @fsockopen('ssl://' . $urlInfo['host'], 443, $errno, $errstr, 10);
         if (!$con) {
@@ -215,7 +215,7 @@ class HttpUtil
         $guzzleClient = new GuzzleClient($config);
         $client       = new Client([], null, $cookies);
         $client->setClient($guzzleClient);
-        $client->setHeader('User-Agent', 'Mozilla/5.0 (Windows NT 10.0; WOW64; rv:46.0) Gecko/20100101 Firefox/46.0');
+        $client->setHeader('User-Agent', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 11_2_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.141 Safari/537.36 Edg/87.0.664.75');
         $client->setHeader('Accept-Language', 'en');
 
         if (isset($options['headers']) && !empty($options['headers'])) {
@@ -363,7 +363,7 @@ class HttpUtil
         $guzzleClient = new GuzzleClient($config);
         $client       = new Client();
         $client->setClient($guzzleClient);
-        $client->setHeader('User-Agent', 'Mozilla/5.0 (Windows NT 10.0; WOW64; rv:46.0) Gecko/20100101 Firefox/46.0');
+        $client->setHeader('User-Agent', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 11_2_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.141 Safari/537.36 Edg/87.0.664.75');
         $client->setHeader('Accept-Language', 'en');
         $crawler = $client->request('GET', $url);
         if (isset($form_filter)) {
@@ -399,7 +399,7 @@ class HttpUtil
             'http' => [
                 'method'  => 'HEAD',
                 'timeout' => 60,
-                'header'  => "User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.2) Gecko/20070219 Firefox/2.0.0.2'\r\n"
+                'header'  => "User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 11_2_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.141 Safari/537.36 Edg/87.0.664.75'\r\n"
             ]
         ]);
         $file_headers = get_headers($url, true, $context);
