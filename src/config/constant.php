@@ -22,7 +22,7 @@ const WATERMARK_MD_WIDTH = 800;         //pixel
 // Rclone type
 const RCLONE_TYPE_GDRIVE   = 'drive';
 const RCLONE_TYPE_ONEDRIVE = 'onedrive';
-const RCLONE_TYPE_1FICHIER = '1fichier';
+const RCLONE_TYPE_1FICHIER = 'fichier';
 
 /*===========================================================================*/
 /*                                   CACHE                                   */
