@@ -51,7 +51,7 @@ class RcloneUtil
     /**
      * @return void
      */
-    public function updateOrCreate()
+    public function syncConfigFile()
     {
         $arr        = [];
         $rcloneName = $this->entity->rclone_name;
@@ -142,6 +142,16 @@ class RcloneUtil
     {
         $cmd = sprintf('rclone deletefile %s:%s', $this->entity->rclone_name, $path);
         exec($cmd);
+    }
+
+    /**
+     * @param $storagePath
+     * @return false|string
+     */
+    public function getFileURL($storagePath)
+    {
+        $cmd = sprintf('rclone link %s:%s', $this->entity->rclone_name, $storagePath);
+        return exec($cmd);
     }
 
     /**
