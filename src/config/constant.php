@@ -19,6 +19,11 @@ const JOB_STATUS_ERROR      = 4;
 const WATERMARK_SM_WIDTH = 400;         //pixel
 const WATERMARK_MD_WIDTH = 800;         //pixel
 
+// Rclone type
+const RCLONE_TYPE_GDRIVE   = 'drive';
+const RCLONE_TYPE_ONEDRIVE = 'onedrive';
+const RCLONE_TYPE_1FICHIER = '1fichier';
+
 /*===========================================================================*/
 /*                                   CACHE                                   */
 /*===========================================================================*/
