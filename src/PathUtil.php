@@ -11,9 +11,9 @@ class PathUtil
      * @param $postId
      * @return string
      */
-    public static function postFilePath($postId): string
+    public static function postStorageDir($postId): string
     {
-        return "post/{$postId}/files";
+        return "post/{$postId}";
     }
 
     /**
