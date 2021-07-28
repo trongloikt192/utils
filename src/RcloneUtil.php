@@ -99,49 +99,53 @@ class RcloneUtil
     }
 
     /**
-     * @return void
+     * @return false|string
      */
     public function delete()
     {
         $cmd = sprintf('rclone config delete %s', $this->entity->rclone_name);
-        exec($cmd);
+        return exec($cmd);
     }
 
     /**
      * @param $path
+     * @return false|string
      */
     public function mkdir($path)
     {
         $cmd = sprintf('rclone mkdir %s:%s', $this->entity->rclone_name, $path);
-        exec($cmd);
+        return exec($cmd);
     }
 
     /**
      * @param $path
+     * @return false|string
      */
     public function rmdir($path)
     {
         $cmd = sprintf('rclone purge %s:%s', $this->entity->rclone_name, $path);
-        exec($cmd);
+        return exec($cmd);
     }
 
     /**
      * @param $sourcePath
      * @param null $toFolderPath
+     * @return false|string
      */
     public function uploadFile($sourcePath, $toFolderPath=null)
     {
         $cmd = sprintf('rclone copy %s %s:%s', $sourcePath, $this->entity->rclone_name, $toFolderPath);
-        exec($cmd);
+        return exec($cmd);
     }
 
     /**
      * @param $path
+     * @return false|string
      */
     public function deleteFile($path)
     {
         $cmd = sprintf('rclone deletefile %s:%s', $this->entity->rclone_name, $path);
-        exec($cmd);
+        return exec($cmd);
     }
 
     /**
