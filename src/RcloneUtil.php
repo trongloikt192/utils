@@ -162,7 +162,7 @@ class RcloneUtil
      * @param $rcloneType
      * @return string
      */
-    public static function detectHostnameByType($rcloneType)
+    public static function convertTypeToHostname($rcloneType)
     {
         switch ($rcloneType) {
             case RCLONE_TYPE_1FICHIER:
@@ -171,6 +171,24 @@ class RcloneUtil
                 return HOST_ONEDRIVE_COM;
             case RCLONE_TYPE_GDRIVE:
                 return HOST_GOOGLE_DRIVE_COM;
+        }
+
+        return null;
+    }
+
+    /**
+     * @param $hostname
+     * @return string
+     */
+    public static function convertHostnameToType($hostname)
+    {
+        switch ($hostname) {
+            case HOST_1FICHIER_COM:
+                return RCLONE_TYPE_1FICHIER;
+            case HOST_ONEDRIVE_COM:
+                return RCLONE_TYPE_ONEDRIVE;
+            case HOST_GOOGLE_DRIVE_COM:
+                return RCLONE_TYPE_GDRIVE;
         }
 
         return null;
