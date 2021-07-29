@@ -15,6 +15,7 @@ class RcloneUtil
     public function __construct(RcloneEntity $entity)
     {
         $this->entity = $entity;
+        $this->syncConfigFile();
     }
 
     /**
