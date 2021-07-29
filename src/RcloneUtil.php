@@ -12,9 +12,13 @@ class RcloneUtil
      */
     protected $entity;
 
-    public function __construct(RcloneEntity $entity)
+    /**
+     * RcloneUtil constructor.
+     * @param $st_storage
+     */
+    public function __construct($st_storage)
     {
-        $this->entity = $entity;
+        $this->entity = new RcloneEntity($st_storage);
         $this->syncConfigFile();
     }
 
