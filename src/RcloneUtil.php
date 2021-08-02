@@ -10,7 +10,7 @@ class RcloneUtil
     /**
      * @var RcloneEntity
      */
-    protected $entity;
+    public $entity;
 
     /**
      * RcloneUtil constructor.
