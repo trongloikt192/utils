@@ -119,7 +119,7 @@ class GetLinkFunction
             , HOST_TURBOBIT_NET     => ['/turbobit.net\/([0-9a-zA-Z]+\.html)/', '/turboget.net\/([0-9a-zA-Z]+\.html)/', '/turb.cc\/([0-9a-zA-Z]+\.html)/']
             , HOST_1FICHIER_COM     => ["/1fichier.com\/\?([0-9a-zA-Z]+)/"]
             , HOST_GOOGLE_DRIVE_COM => ["/drive.google.com\/file\/d\/([0-9a-zA-Z-_=.]+)/", "/drive.google.com\/open\?id=([0-9a-zA-Z-_=.]+)/"]
-            , HOST_ONEDRIVE_COM     => ["sharepoint.com\/.*\/download.aspx\?share=([\w\_\-\+]+)"]
+            , HOST_ONEDRIVE_COM     => ["/sharepoint.com\/.*\/download.aspx\?share=([\w\_\-\+]+)/"]
         ];
 
         foreach ($regex as $provider => $arrRegx) {
