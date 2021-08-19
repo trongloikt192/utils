@@ -48,4 +48,9 @@ class JwtAuth
     {
         return self::$userEmail;
     }
+
+    public static function setUserId($userId)
+    {
+        self::$userId = $userId;
+    }
 }
