@@ -146,6 +146,8 @@ class GetLinkFunction
     public static function reformatLink($provider, $code)
     {
         switch ($provider) {
+            case HOST_1FICHIER_COM:
+                return "https://1fichier.com/?{$code}";
             case HOST_4SHARE_VN:
                 return "https://4share.vn/f/{$code}";
             case HOST_FSHARE_VN:
