@@ -114,7 +114,9 @@ class HtmlUtil
     public static function formatTags($jsonStr)
     {
         $arr = json_decode($jsonStr, true);
-        return implode(', ', $arr);
+        return is_array($arr)
+            ? implode(', ', $arr)
+            : null;
     }
 
     /**
