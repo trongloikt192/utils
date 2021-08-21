@@ -23,6 +23,8 @@ const WATERMARK_MD_WIDTH = 800;         //pixel
 const RCLONE_TYPE_GDRIVE   = 'drive';
 const RCLONE_TYPE_ONEDRIVE = 'onedrive';
 const RCLONE_TYPE_1FICHIER = 'fichier';
+const RCLONE_TYPE_NITROFLARE = 'nitroflare';
+const RCLONE_TYPE_RAPIDGATOR = 'rapidgator';
 
 /*===========================================================================*/
 /*                                   CACHE                                   */
