@@ -203,14 +203,14 @@ class GetLinkFunction
 
     /**
      * Return getlink address
-     * http://download01.vnlinks.net:81/api/<path>
+     * http://download01.vnlinks.net:81/<path>
      * @param $server
      * @param null $path request-getlink, request-getlink-directly
      * @return string
      */
     public static function getDomainGetLinkFromServerName($server, $path=null)
     {
-        $result = 'http://' . $server . ':81/api';
+        $result = 'http://' . self::removeSchemeURL($server) . ':81';
         if (strlen($path) > 0) {
             $result .= '/' . ltrim($path, '/');
         }
