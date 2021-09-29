@@ -486,4 +486,69 @@ class HttpUtil
 
         return $headers;
     }
+
+    /**
+     * Upload single file
+     *
+     * @throws UtilException
+     * @return bool
+     */
+    public static function uploadFile($url, $sourcePath, $options=['headers' => [], 'body' => []])
+    {
+        // Vì chúng ta đang gửi file nên header của nó
+        // phải ở dạng Content-Type:multipart/form-data
+        $headers = ['Content-Type: multipart/form-data'];
+
+        // Đối với filedata phải có ký hiệu @ ở trước
+        $postFields = ['file' => "@{$sourcePath}"];
+
+        // Custom headers
+        if (!empty($options['headers'])) {
+            foreach ($options['headers'] as $key => $val) {
+                $headers[] = "{$key}: {$val}";
+            }
+        }
+
+        // Custom post data
+        if (!empty($options['body'])) {
+            foreach ($options['body'] as $key => $val) {
+                $postFields[$key] = $val;
+            }
+        }
+
+        // Khởi tạo CURL
+        $ch = curl_init($url);
+
+        // Cấu hình có sử dụng header
+        curl_setopt($ch, CURLOPT_HEADER, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+
+        // Cấu hình sử dụng method POST
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $postFields);
+
+        // Thiết lập có gửi file và thông tin file
+        curl_setopt($ch, CURLOPT_INFILESIZE, filesize($sourcePath));
+
+        // Cấu hình return
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+        // Thực thi
+        curl_exec($ch);
+
+        // Nếu không tồn tại lỗi nào trong CURL
+        if (!curl_errno($ch)) {
+            $info = curl_getinfo($ch);
+            if ($info['http_code'] == 200) {
+                return true;
+            }
+        } else {
+            throw new UtilException(curl_error($ch));
+        }
+
+        // Đóng CURL
+        curl_close($ch);
+
+        return false;
+    }
 }
