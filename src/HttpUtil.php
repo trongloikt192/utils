@@ -499,8 +499,9 @@ class HttpUtil
         // phải ở dạng Content-Type:multipart/form-data
         $headers = ['Content-Type: multipart/form-data'];
 
-        // Đối với filedata phải có ký hiệu @ ở trước
-        $postFields = ['file' => "@{$sourcePath}"];
+        // Đối với file cần new CURLFile
+        $file = new \CURLFile($sourcePath);
+        $postFields = ['file' => $file];
 
         // Custom headers
         if (!empty($options['headers'])) {
