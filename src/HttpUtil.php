@@ -491,7 +491,7 @@ class HttpUtil
      * Upload single file
      *
      * @throws UtilException
-     * @return bool
+     * @return array
      */
     public static function uploadFile($url, $sourcePath, $options=['headers' => [], 'body' => []])
     {
@@ -534,21 +534,19 @@ class HttpUtil
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
         // Thực thi
-        curl_exec($ch);
+        $respContent = curl_exec($ch);
 
         // Nếu không tồn tại lỗi nào trong CURL
-        if (!curl_errno($ch)) {
-            $info = curl_getinfo($ch);
-            if ($info['http_code'] == 200) {
-                return true;
-            }
-        } else {
+        if (curl_errno($ch)) {
             throw new UtilException(curl_error($ch));
         }
+
+        $info = curl_getinfo($ch);
+        $respCode = $info['http_code'];
 
         // Đóng CURL
         curl_close($ch);
 
-        return false;
+        return [$respContent, $respCode];
     }
 }

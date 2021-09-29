@@ -116,6 +116,81 @@ class InternalRequest
     }
 
     /**
+     * @param $path
+     * @param $filePath
+     * @param array $parameters
+     * @return array
+     * @throws Exceptions\UtilException
+     */
+    public static function uploadFileToDocs($path, $filePath, $parameters = []): array
+    {
+        $url = self::formatURL(env('X_API_DOCS_URL'), $path);
+        return self::uploadFile($url, $filePath, $parameters);
+    }
+
+    /**
+     * @param $path
+     * @param $filePath
+     * @param array $parameters
+     * @return array
+     * @throws Exceptions\UtilException
+     */
+    public static function uploadFileToMaster($path, $filePath, $parameters = []): array
+    {
+        $url = self::formatURL(env('X_API_MASTER_URL'), $path);
+        return self::uploadFile($url, $filePath, $parameters);
+    }
+
+    /**
+     * @param $serverAddress
+     * @param $path
+     * @param $filePath
+     * @param array $parameters
+     * @return array
+     * @throws Exceptions\UtilException
+     */
+    public static function uploadFileToBackup($serverAddress, $path, $filePath, $parameters = []): array
+    {
+        $url = self::formatURL($serverAddress, $path);
+        return self::uploadFile($url, $filePath, $parameters);
+    }
+
+    /**
+     * @param $serverAddress
+     * @param $path
+     * @param $filePath
+     * @param array $parameters
+     * @return array
+     * @throws Exceptions\UtilException
+     */
+    public static function uploadFileToGetlink($serverAddress, $path, $filePath, $parameters = [])
+    {
+        $url = GetLinkFunction::getDomainGetLinkFromServerName($serverAddress) . self::PREFIX_INTERNAL_API_PATH . trim($path, '/');
+        return self::uploadFile($url, $filePath, $parameters);
+    }
+
+    /**
+     * @param $url
+     * @param $filePath
+     * @param array $body
+     * @return array [content, status code]
+     * @throws Exceptions\UtilException
+     */
+    public static function uploadFile($url, $filePath, $body = [])
+    {
+        $options = [
+            'header' => ['X-Api-Key' => XApiAuth::make()],
+            'body'   => $body
+        ];
+        [$content, $statusCode] = HttpUtil::uploadFile($url, $filePath, $options);
+
+        return [
+            $content,
+            $statusCode
+        ];
+    }
+
+    /**
      * Remove unnecessary slash
      *
      * @param string $domain
