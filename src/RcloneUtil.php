@@ -198,6 +198,10 @@ class RcloneUtil
                 return RCLONE_TYPE_ONEDRIVE;
             case HOST_GOOGLE_DRIVE_COM:
                 return RCLONE_TYPE_GDRIVE;
+            case HOST_NITROFLARE_COM:
+                return RCLONE_TYPE_NITROFLARE;
+            case HOST_RAPIDGATOR_NET:
+                return RCLONE_TYPE_RAPIDGATOR;
         }
 
         return null;
