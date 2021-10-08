@@ -97,6 +97,20 @@ class InternalRequest
     }
 
     /**
+     * Request to crawler service
+     *
+     * @param $method
+     * @param string $path
+     * @param array $parameter
+     * @return array
+     */
+    public static function crawler($method, $path, $parameter)
+    {
+        $url = self::formatURL(env('X_API_CRAWLER_URL'), $path);
+        return self::request($method, $url, $parameter);
+    }
+
+    /**
      * @param string $method
      * @param string $url
      * @param array $parameters
