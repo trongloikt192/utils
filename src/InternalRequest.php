@@ -49,7 +49,7 @@ class InternalRequest
      */
     public static function backup($method, $serverAddress, $path, $parameter = [])
     {
-        $url = self::formatURL($serverAddress, $path);
+        $url = self::getDomainBackupFromServerName($serverAddress) . self::PREFIX_INTERNAL_API_PATH . trim($path, '/');
         return self::request($method, $url, $parameter);
     }
 
@@ -217,5 +217,21 @@ class InternalRequest
         $domain .= self::PREFIX_INTERNAL_API_PATH;
         $domain .= ltrim($path, '/');
         return $domain;
+    }
+
+    /**
+     * Return backup address
+     * http://backup01.vnlinks.net/<path>
+     * @param $server
+     * @param null $path request-getlink, request-getlink-directly
+     * @return string
+     */
+    private static function getDomainBackupFromServerName($server, $path=null)
+    {
+        $result = 'http://' . GetLinkFunction::removeSchemeURL($server);
+        if (strlen($path) > 0) {
+            $result .= '/' . ltrim($path, '/');
+        }
+        return $result;
     }
 }
