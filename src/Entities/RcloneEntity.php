@@ -9,6 +9,11 @@ class RcloneEntity extends BaseEntity
     /**
      * @var string
      */
+    public $group;
+
+    /**
+     * @var string
+     */
     public $rclone_name;
 
     /**
