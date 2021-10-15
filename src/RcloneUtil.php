@@ -185,7 +185,7 @@ class RcloneUtil
      * @param $storagePath
      * @return false|string
      */
-    private function _getDownloadLink($storagePath)
+    public function getDownloadLink($storagePath)
     {
         $cmd  = sprintf('rclone link %s:%s', $this->entity->rclone_name, $storagePath);
         return exec($cmd);
