@@ -4,6 +4,7 @@ namespace trongloikt192\Utils;
 
 
 use trongloikt192\Utils\Entities\RcloneEntity;
+use trongloikt192\Utils\Exceptions\UtilException;
 
 class RcloneUtil
 {
@@ -125,41 +126,68 @@ class RcloneUtil
     /**
      * @param $path
      * @return false|string
+     * @throws UtilException
      */
     public function rmdir($path)
     {
         $cmd = sprintf('rclone purge %s:%s', $this->entity->rclone_name, $path);
-        return exec($cmd);
+        $out = shell_exec($cmd);
+        if (strlen(trim($out)) > 0) {
+            throw new UtilException($out);
+        }
+        return $out;
     }
 
     /**
      * @param $sourcePath
      * @param null $toFolderPath
      * @return false|string
+     * @throws UtilException
      */
     public function uploadFile($sourcePath, $toFolderPath=null)
     {
         $cmd = sprintf('rclone copy %s %s:%s', $sourcePath, $this->entity->rclone_name, $toFolderPath);
-        return exec($cmd);
+        $out = shell_exec($cmd);
+        if (strlen(trim($out)) > 0) {
+            throw new UtilException($out);
+        }
+        return $out;
     }
 
     /**
      * @param $path
      * @return false|string
+     * @throws UtilException
      */
     public function deleteFile($path)
     {
         $cmd = sprintf('rclone deletefile %s:%s', $this->entity->rclone_name, $path);
-        return exec($cmd);
+        $out = shell_exec($cmd);
+        if (strlen(trim($out)) > 0) {
+            throw new UtilException($out);
+        }
+        return $out;
     }
 
     /**
      * @param $storagePath
      * @return false|string
      */
-    public function getFileURL($storagePath)
+    public function getFileId($storagePath)
     {
-        $cmd = sprintf('rclone link %s:%s', $this->entity->rclone_name, $storagePath);
+        $cmd  = sprintf('rclone lsjson %s:%s', $this->entity->rclone_name, $storagePath);
+        $out  = shell_exec($cmd);
+        $json = json_decode($out, true);
+        return $json[0]['ID'];
+    }
+
+    /**
+     * @param $storagePath
+     * @return false|string
+     */
+    private function _getDownloadLink($storagePath)
+    {
+        $cmd  = sprintf('rclone link %s:%s', $this->entity->rclone_name, $storagePath);
         return exec($cmd);
     }
 
