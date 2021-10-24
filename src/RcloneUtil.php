@@ -216,11 +216,11 @@ class RcloneUtil
     }
 
     /**
-     * @return RcloneEntity
+     * @return array
      */
-    public function getEntity()
+    public function exportEntityArray()
     {
-        return $this->entity;
+        return (array)$this->entity;
     }
 
     /**
