@@ -196,10 +196,10 @@ class RcloneUtil
      *
      * @return false|string
      */
-    public function getTokenGdrive($refresh = false)
+    public function getTokenGdrive($refreshBefore = false)
     {
         // refresh new token
-        if ($refresh == true) {
+        if ($refreshBefore == true) {
             $this->about();
         }
 
@@ -208,7 +208,19 @@ class RcloneUtil
         $out   = shell_exec($cmd);
         $json  = json_decode($out, true);
         $token = $json[$this->entity->rclone_name]['token'];
+
+        // set token to entity
+        $this->entity->token = $token;
+
         return json_decode($token, true);
+    }
+
+    /**
+     * @return RcloneEntity
+     */
+    public function getEntity()
+    {
+        return $this->entity;
     }
 
     /**
