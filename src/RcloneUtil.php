@@ -196,19 +196,19 @@ class RcloneUtil
      *
      * @return false|string
      */
-    public function getTokenGdrive()
+    public function getTokenGdrive($refresh = false)
     {
         // refresh new token
-        $this->about();
+        if ($refresh == true) {
+            $this->about();
+        }
 
         // get token from rclone file
         $cmd   = 'rclone config dump';
         $out   = shell_exec($cmd);
         $json  = json_decode($out, true);
         $token = $json[$this->entity->rclone_name]['token'];
-        $arr   = json_decode($token, true);
-
-        return $arr['access_token'];
+        return json_decode($token, true);
     }
 
     /**
