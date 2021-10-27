@@ -146,7 +146,7 @@ class RcloneUtil
      */
     public function uploadFile($sourcePath, $toFolderPath=null)
     {
-        $cmd = sprintf('rclone copy %s %s:%s --ignore-existing --ignore-checksum --transfers 4 --checkers 8 --onedrive-chunk-size 128M --drive-chunk-size 128M', $sourcePath, $this->entity->rclone_name, $toFolderPath);
+        $cmd = sprintf('rclone copy %s %s:%s --ignore-existing --ignore-checksum --transfers 4 --checkers 8 --onedrive-chunk-size 156.25M --drive-chunk-size 128M', $sourcePath, $this->entity->rclone_name, $toFolderPath);
         $out = shell_exec($cmd);
         if (strlen(trim($out)) > 0) {
             throw new UtilException($out);
