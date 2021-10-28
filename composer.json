@@ -36,6 +36,7 @@
     "ext-fileinfo": "*",
     "ext-json": "*",
     "ext-zip": "*",
-    "ext-gd": "*"
+    "ext-gd": "*",
+    "microsoft/microsoft-graph": "dev-dev"
   }
 }
