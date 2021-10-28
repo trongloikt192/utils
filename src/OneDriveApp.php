@@ -23,7 +23,6 @@ class OneDriveApp
         $clientSecret = $config['clientSecret'];
         $username     = $config['username'];
         $password     = $config['password'];
-        logger()->error('$config', $config);
 
         $url  = 'https://login.microsoftonline.com/' . $tenantId . '/oauth2/token';
         $resp = $guzzle->post($url, [
@@ -41,7 +40,7 @@ class OneDriveApp
             throw new UtilException($resp->getBody()->getContents());
         }
 
-        $user_token = json_decode($resp->getBody()->getContents(), true);
+        $user_token = json_decode($resp->getBody()->getContents());
 
         $this->_Graph = new Graph();
         $this->_Graph->setAccessToken($user_token->access_token);
