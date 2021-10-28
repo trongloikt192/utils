@@ -41,7 +41,7 @@ class OneDriveApp
         }
 
         logger()->error('info', $config);
-        logger()->error('resp', $resp->getBody()->getContents());
+        logger()->error($resp->getBody()->getContents());
 
         $user_token = json_decode($resp->getBody()->getContents());
 
