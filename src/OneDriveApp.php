@@ -40,6 +40,9 @@ class OneDriveApp
             throw new UtilException($resp->getBody()->getContents());
         }
 
+        logger()->error('info', $config);
+        logger()->error('resp', $resp->getBody()->getContents());
+
         $user_token = json_decode($resp->getBody()->getContents());
 
         $this->_Graph = new Graph();
@@ -70,6 +73,8 @@ class OneDriveApp
                 ])
                 ->setReturnType(UploadSession::class)
                 ->execute();
+
+            logger()->error('upload url ' . $uploadSession->getUploadUrl());
 
             $handle        = fopen($sourcePath, 'rb');
             $fileSize      = fileSize($sourcePath);
