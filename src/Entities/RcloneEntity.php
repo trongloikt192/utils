@@ -60,4 +60,9 @@ class RcloneEntity extends BaseEntity
      * @var string
      */
     public $onedrive_type;
+
+    /**
+     * @var string
+     */
+    public $onedrive_tenant_id;
 }
