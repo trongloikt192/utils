@@ -4,6 +4,7 @@ namespace trongloikt192\Utils;
 
 use Microsoft\Graph\Graph;
 use Microsoft\Graph\Model\UploadSession;
+use trongloikt192\Utils\Exceptions\UtilException;
 
 class OneDriveApp
 {
@@ -12,6 +13,7 @@ class OneDriveApp
     /**
      * OneDriveApp constructor.
      * @param array $config
+     * @throws UtilException
      */
     public function __construct(array $config)
     {
@@ -21,9 +23,10 @@ class OneDriveApp
         $clientSecret = $config['clientSecret'];
         $username     = $config['username'];
         $password     = $config['password'];
+        logger()->error('$config', $config);
 
-        $url          = 'https://login.microsoftonline.com/' . $tenantId . '/oauth2/token';
-        $user_token   = json_decode($guzzle->post($url, [
+        $url  = 'https://login.microsoftonline.com/' . $tenantId . '/oauth2/token';
+        $resp = $guzzle->post($url, [
             'form_params' => [
                 'client_id'     => $clientId,
                 'client_secret' => $clientSecret,
@@ -32,7 +35,13 @@ class OneDriveApp
                 'username'      => $username,
                 'password'      => $password
             ],
-        ])->getBody()->getContents(), true);
+        ]);
+
+        if ($resp->getStatusCode() != 200) {
+            throw new UtilException($resp->getBody()->getContents());
+        }
+
+        $user_token = json_decode($resp->getBody()->getContents(), true);
 
         $this->_Graph = new Graph();
         $this->_Graph->setAccessToken($user_token->access_token);
