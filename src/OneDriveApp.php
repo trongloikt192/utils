@@ -42,9 +42,6 @@ class OneDriveApp
 
         $user_token = json_decode($resp->getBody()->getContents(), true);
 
-        logger()->error('info', $config);
-        logger()->error('data', $user_token);
-
         $this->_Graph = new Graph();
         $this->_Graph->setAccessToken($user_token['access_token']);
     }
@@ -73,8 +70,6 @@ class OneDriveApp
                 ])
                 ->setReturnType(UploadSession::class)
                 ->execute();
-
-            logger()->error('upload url ' . $uploadSession->getUploadUrl());
 
             $handle        = fopen($sourcePath, 'rb');
             $fileSize      = fileSize($sourcePath);
