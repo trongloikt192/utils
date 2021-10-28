@@ -40,13 +40,13 @@ class OneDriveApp
             throw new UtilException($resp->getBody()->getContents());
         }
 
-        logger()->error('info', $config);
-        logger()->error($resp->getBody()->getContents());
+        $user_token = json_decode($resp->getBody()->getContents(), true);
 
-        $user_token = json_decode($resp->getBody()->getContents());
+        logger()->error('info', $config);
+        logger()->error('data', $user_token);
 
         $this->_Graph = new Graph();
-        $this->_Graph->setAccessToken($user_token->access_token);
+        $this->_Graph->setAccessToken($user_token['access_token']);
     }
 
     /**
