@@ -141,17 +141,30 @@ class RcloneUtil
     /**
      * @param $sourcePath
      * @param null $toFolderPath
-     * @return false|string
+     * @return void
      * @throws UtilException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Microsoft\Graph\Exception\GraphException
      */
     public function uploadFile($sourcePath, $toFolderPath=null)
     {
-        $cmd = sprintf('rclone copy %s %s:%s --ignore-existing --ignore-checksum --transfers 4 --checkers 8 --onedrive-chunk-size 160M --drive-chunk-size 128M --log-level INFO --log-file /var/tmp/rclone.log 2>&1', $sourcePath, $this->entity->rclone_name, $toFolderPath);
-        $out = shell_exec($cmd);
-        if (strlen(trim($out)) > 0) {
-            throw new UtilException($out);
+        if ($this->entity->rclone_type == RCLONE_TYPE_ONEDRIVE) {
+            $oneDrive = new OneDriveApp([
+                'tenantId'     => $this->entity->onedrive_tenant_id,
+                'clientId'     => $this->entity->client_id,
+                'clientSecret' => $this->entity->client_secret,
+                'username'     => $this->entity->email,
+                'password'     => $this->entity->password
+            ]);
+            $oneDrive->uploadFile($sourcePath, $toFolderPath);
+
+        } else {
+            $cmd = sprintf('rclone copy %s %s:%s --ignore-existing --ignore-checksum --transfers 4 --checkers 8 --onedrive-chunk-size 160M --drive-chunk-size 128M --log-level INFO --log-file /var/tmp/rclone.log 2>&1', $sourcePath, $this->entity->rclone_name, $toFolderPath);
+            $out = shell_exec($cmd);
+            if (strlen(trim($out)) > 0) {
+                throw new UtilException($out);
+            }
         }
-        return $out;
     }
 
     /**

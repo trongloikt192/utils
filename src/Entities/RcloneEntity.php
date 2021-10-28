@@ -24,6 +24,16 @@ class RcloneEntity extends BaseEntity
     /**
      * @var string
      */
+    public $email;
+
+    /**
+     * @var string
+     */
+    public $password;
+
+    /**
+     * @var string
+     */
     public $client_id;
 
     /**

@@ -65,7 +65,7 @@ class OneDriveApp
 
             $handle        = fopen($sourcePath, 'rb');
             $fileSize      = fileSize($sourcePath);
-            $chunkSize     = 1024 * 1024 * 64;
+            $chunkSize     = 1024 * 1024 * 128;
             $prevBytesRead = 0;
             while (!feof($handle)) {
                 $bytes     = fread($handle, $chunkSize);
