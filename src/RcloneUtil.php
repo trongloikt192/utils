@@ -159,7 +159,7 @@ class RcloneUtil
 //            $oneDrive->uploadFile($sourcePath, $toFolderPath);
 //
 //        } else {
-            $cmd = sprintf('rclone copy %s %s:%s --ignore-checksum --transfers 4 --checkers 4 --onedrive-chunk-size 250M --drive-chunk-size 250M --log-level DEBUG --log-file /var/tmp/rclone.log 2>&1', $sourcePath, $this->entity->rclone_name, $toFolderPath);
+            $cmd = sprintf('rclone copy %s %s:%s --ignore-checksum --transfers 4 --checkers 4 --onedrive-chunk-size 250M --drive-chunk-size 256M --log-level DEBUG --log-file /var/tmp/rclone.log 2>&1', $sourcePath, $this->entity->rclone_name, $toFolderPath);
             $out = shell_exec($cmd);
             if (strlen(trim($out)) > 0) {
                 throw new UtilException($out);
