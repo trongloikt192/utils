@@ -92,6 +92,7 @@ class RcloneUtil
         }
 
         // Get config path
+        exec('rclone config touch');
         $rcloneFile = exec('rclone config file');
         // Delete
         exec(sprintf('rclone config delete %s', $rcloneName));
