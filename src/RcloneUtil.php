@@ -176,7 +176,7 @@ class RcloneUtil
     public function deleteFile($path)
     {
         $cmd = sprintf('rclone deletefile %s:%s --timeout=60s', $this->entity->rclone_name, $path);
-        $out = shell_exec($cmd);
+        $out = exec($cmd);
         if (strlen(trim($out)) > 0) {
             throw new UtilException($out);
         }
