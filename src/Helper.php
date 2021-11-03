@@ -2,11 +2,15 @@
 
 namespace trongloikt192\Utils;
 
+use Illuminate\Support\Facades\File;
 use RuntimeException;
 use ZipArchive;
 
 class Helper
 {
+    const VIDEO_EXTENSIONS         = ['mp4', 'flv', 'webm', 'mkv', 'avi', '3gp', 'wav', 'ts', 'wmv', 'mov'];
+    const VIDEO_BROWSER_EXTENSIONS = ['mp4', 'flv', 'webm'];
+
     /**
      * @param string $folder
      * @param boolean $relativePath
@@ -342,5 +346,37 @@ class Helper
         $code = dechex(crc32($str));
         $code = substr($code, 0, 6);
         return $code ? '#'.$code : $code;
+    }
+
+    /**
+     * Check file's extension is video
+     * @param $filename
+     * @return bool
+     */
+    public static function fileIsVideo($filename)
+    {
+        $extension = strtolower(File::extension($filename));
+
+        if (in_array($extension, self::VIDEO_EXTENSIONS, true)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Check file's extension is video and browser support for play
+     * @param $filename
+     * @return bool
+     */
+    public static function fileIsVideoBrowser($filename)
+    {
+        $extension = strtolower(File::extension($filename));
+
+        if (in_array($extension, self::VIDEO_BROWSER_EXTENSIONS, true)) {
+            return true;
+        }
+
+        return false;
     }
 }

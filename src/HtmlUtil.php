@@ -193,4 +193,26 @@ class HtmlUtil
 
         return preg_replace($search, $replace, $content);
     }
+
+    /**
+     * Check file's extension is video
+     *
+     * @param $filename
+     * @return bool
+     */
+    public static function fileIsVideo($filename)
+    {
+        return Helper::fileIsVideo($filename);
+    }
+
+    /**
+     * Check file's extension is video and browser support for play
+     *
+     * @param $filename
+     * @return bool
+     */
+    public static function fileIsVideoBrowser($filename)
+    {
+        return Helper::fileIsVideoBrowser($filename);
+    }
 }
