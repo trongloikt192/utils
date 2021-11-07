@@ -39,7 +39,8 @@ class RcloneUtil
 
             case RCLONE_TYPE_GDRIVE:
             case RCLONE_TYPE_ONEDRIVE:
-                $cmd = sprintf('rclone about %s: --json', $rcloneName);
+                $log = '/var/tmp/rclone_'. date('Ymd') .'.log';
+                $cmd = sprintf('rclone about %s: --json --log-level DEBUG --log-file %s', $rcloneName, $log);
                 break;
         }
 
@@ -110,7 +111,8 @@ class RcloneUtil
      */
     public function delete()
     {
-        $cmd = sprintf('rclone config delete %s', $this->entity->rclone_name);
+        $log = '/var/tmp/rclone_'. date('Ymd') .'.log';
+        $cmd = sprintf('rclone config delete %s --log-level DEBUG --log-file %s', $this->entity->rclone_name, $log);
         return exec($cmd);
     }
 
@@ -120,7 +122,8 @@ class RcloneUtil
      */
     public function mkdir($path)
     {
-        $cmd = sprintf('rclone mkdir %s:%s', $this->entity->rclone_name, $path);
+        $log = '/var/tmp/rclone_'. date('Ymd') .'.log';
+        $cmd = sprintf('rclone mkdir %s:%s --log-level DEBUG --log-file %s', $this->entity->rclone_name, $path, $log);
         return exec($cmd);
     }
 
@@ -131,7 +134,8 @@ class RcloneUtil
      */
     public function rmdir($path)
     {
-        $cmd = sprintf('rclone purge %s:%s', $this->entity->rclone_name, $path);
+        $log = '/var/tmp/rclone_'. date('Ymd') .'.log';
+        $cmd = sprintf('rclone purge %s:%s --log-level DEBUG --log-file %s', $this->entity->rclone_name, $path, $log);
         $out = shell_exec($cmd);
         if (strlen(trim($out)) > 0) {
             throw new UtilException($out);
@@ -161,7 +165,8 @@ class RcloneUtil
 //            return;
 //        }
 
-        $cmd = sprintf('rclone copy %s %s:%s --ignore-checksum --transfers 4 --checkers 4 --onedrive-chunk-size 250M --drive-chunk-size 256M --log-level DEBUG --log-file /var/tmp/rclone.log 2>&1', $sourcePath, $this->entity->rclone_name, $toFolderPath);
+        $log = '/var/tmp/rclone_'. date('Ymd') .'.log';
+        $cmd = sprintf('rclone copy %s %s:%s --ignore-checksum --transfers 4 --checkers 4 --onedrive-chunk-size 250M --drive-chunk-size 256M --log-level DEBUG --log-file %s 2>&1', $sourcePath, $this->entity->rclone_name, $toFolderPath, $log);
         $out = shell_exec($cmd);
         if (strlen(trim($out)) > 0) {
             throw new UtilException($out);
@@ -175,7 +180,8 @@ class RcloneUtil
      */
     public function deleteFile($path)
     {
-        $cmd = sprintf('rclone deletefile %s:%s --timeout=60s', $this->entity->rclone_name, $path);
+        $log = '/var/tmp/rclone_'. date('Ymd') .'.log';
+        $cmd = sprintf('rclone deletefile %s:%s --timeout=60s --log-level DEBUG --log-file %s', $this->entity->rclone_name, $path, $log);
         $out = exec($cmd);
         if (strlen(trim($out)) > 0) {
             throw new UtilException($out);
