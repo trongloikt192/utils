@@ -261,6 +261,7 @@ class HttpUtil
                 $domain   = $ck['domain'] ?? '';
                 $secure   = $ck['secure'] ?? false;
                 $httpOnly = $ck['httpOnly'] ?? true;
+                $sameSite = $ck['sameSite'];
 
                 $cookie = new Cookie($name
                     , $value
@@ -269,6 +270,8 @@ class HttpUtil
                     , $domain
                     , $secure
                     , $httpOnly
+                    , false
+                    , $sameSite
                 );
                 $cookieJar->set($cookie);
             }
@@ -326,7 +329,7 @@ class HttpUtil
                     'httpOnly'       => $cookie->isHttpOnly(),
                     'name'           => $cookie->getName(),
                     'path'           => $cookie->getPath(),
-                    'sameSite'       => 'no_restriction',
+                    'sameSite'       => $cookie->getSameSite(),
                     'secure'         => (bool)$cookie->isSecure(),
                     'session'        => (bool)false,
                     'storeId'        => '0',
