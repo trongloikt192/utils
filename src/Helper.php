@@ -379,4 +379,17 @@ class Helper
 
         return false;
     }
+
+    /**
+     * Get post Id from post slug
+     * @param $slug
+     * @return mixed|null
+     */
+    public static function getPostIdFromSlug($slug)
+    {
+        if (preg_match('/\-(\d+)\.download/', $slug, $matches) !== false) {
+            return $matches[1] ?? null;
+        }
+        return null;
+    }
 }
