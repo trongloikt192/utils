@@ -313,7 +313,7 @@ class HttpUtil
      * @param Client $client
      * @param $cookie_jar
      */
-    private static function goutteSaveCookieJar($client, $cookie_jar)
+    public static function goutteSaveCookieJar($client, $cookie_jar)
     {
         $cookie_array = array();
         $cookieJar    = $client->getCookieJar();
