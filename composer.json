@@ -37,6 +37,7 @@
     "ext-json": "*",
     "ext-zip": "*",
     "ext-gd": "*",
-    "microsoft/microsoft-graph": "dev-dev"
+    "microsoft/microsoft-graph": "dev-dev",
+    "ps/image-optimizer": "dev-master"
   }
 }

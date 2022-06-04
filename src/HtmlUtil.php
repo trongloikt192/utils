@@ -176,7 +176,7 @@ class HtmlUtil
             return $path;
         }
 
-        return env('MINIO_ENDPOINT') .'/'. env('MINIO_BUCKET') .'/'. sprintf($path, DISP_MD);
+        return env('MINIO_ENDPOINT') .'/'. env('MINIO_BUCKET') .'/'. sprintf($path, DISP_SM);
     }
 
     /**
@@ -189,7 +189,7 @@ class HtmlUtil
     {
         $minio   = env('MINIO_ENDPOINT') . '/' . env('MINIO_BUCKET');
         $search  = '/(uploads\/post\/\d+\/img\/disp\/content\/\w+)%s(\.\w+)/';
-        $replace = $minio . '/$1' . DISP_MD . '$2';
+        $replace = $minio . '/$1' . DISP_SM . '$2';
 
         return preg_replace($search, $replace, $content);
     }

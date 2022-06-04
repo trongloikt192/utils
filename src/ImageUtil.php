@@ -5,6 +5,7 @@ namespace trongloikt192\Utils;
 
 use GuzzleHttp\Client;
 use Illuminate\Support\Facades\File;
+use ImageOptimizer\OptimizerFactory;
 use Intervention\Image\ImageManagerStatic as Image;
 use trongloikt192\Utils\Exceptions\UtilException;
 
@@ -104,6 +105,7 @@ class ImageUtil
 
     /**
      * Compressing image
+     * Dùng hết miễn phí 500 lượt Tinify -> chuyển sang thư viện ps/image-optimizer của php
      *
      * @param $imgPath
      * @param $destPath
@@ -116,8 +118,17 @@ class ImageUtil
             \Tinify\validate();
             $source = \Tinify\fromFile($imgPath);
             $source->toFile($destPath);
+
         } catch (\Tinify\Exception $e) {
-            throw new \Exception('Tinify error');
+            // Log Tinify error
+            logger()->error($e);
+
+            // Compress image -> kb size smaller 10 - 70%
+            // optimized file overwrites original one
+            rename($imgPath, $destPath);
+            $factory = new OptimizerFactory();
+            $optimizer = $factory->get();
+            $optimizer->optimize($destPath);
         }
     }
 
