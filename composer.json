@@ -22,17 +22,17 @@
     ]
   },
   "require": {
-    "php": "^7.3|^8.0",
+    "php": "^8.0",
     "laravel/framework": "^8.3.1",
 
     "fabpot/goutte": "^4.0.2",
     "firebase/php-jwt": "^6.2.0",
-    "google/apiclient": "^1.1.9",
+    "google/apiclient": "^2.12.6",
     "google/apiclient-services": "^0.254.0",
     "intervention/image": "^2.7.2",
-    "microsoft/microsoft-graph": "dev-dev",
-    "ps/image-optimizer": "dev-master",
-    "tinify/tinify": "dev-master",
+    "microsoft/microsoft-graph": "^2.*",
+    "ps/image-optimizer": "^2.0.5",
+    "tinify/tinify": "^1.5.3",
 
     "ext-curl": "*",
     "ext-fileinfo": "*",
