@@ -27,8 +27,8 @@
 
     "fabpot/goutte": "~3.2.3",
     "firebase/php-jwt": "^6.2.0",
-    "google/apiclient": "~2.2.3",
-    "google/apiclient-services": "~0.13",
+    "google/apiclient": "^2.12.6",
+    "google/apiclient-services": "^0.254.0",
     "intervention/image": "~2.4",
     "tinify/tinify": "dev-master",
 
