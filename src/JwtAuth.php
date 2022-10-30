@@ -9,6 +9,7 @@
 namespace trongloikt192\Utils;
 
 use Firebase\JWT\JWT;
+use Firebase\JWT\Key;
 
 class JwtAuth
 {
@@ -23,7 +24,7 @@ class JwtAuth
      */
     public static function parse($accessKey)
     {
-        $credentials = JWT::decode($accessKey, env('JWT_SECRET'), [env('JWT_ALGO')]);
+        $credentials = JWT::decode($accessKey, new Key(env('JWT_SECRET'), env('JWT_ALGO')));
         self::$userId = $credentials->id;
         self::$userRole = $credentials->role_id;
         self::$userEmail = $credentials->email;
