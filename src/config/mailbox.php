@@ -22,3 +22,4 @@ const MAIL_NOTIFY_REUP_ADMIN_CONFIRM_TO_USER       = 'noti007a';
 const MAIL_NOTIFY_REUP_ADMIN_CONFIRM_TO_UPLOADER   = 'noti007b';
 const MAIL_NOTIFY_REUP_FAILURE_TO_USER             = 'noti008a';
 const MAIL_NOTIFY_REUP_FAILURE_TO_UPLOADER         = 'noti008b';
+const MAIL_NOTIFY_REUP_USER_REQUEST                = 'noti009';
