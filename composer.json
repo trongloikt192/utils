@@ -30,7 +30,7 @@
     "google/apiclient": "~2.2.3",
     "google/apiclient-services": "~0.13",
     "intervention/image": "~2.4",
-    "tinify/tinify": "dev-master",
+    "tinify/tinify": "^1.6.0˚",
 
     "ext-curl": "*",
     "ext-fileinfo": "*",
@@ -38,6 +38,6 @@
     "ext-zip": "*",
     "ext-gd": "*",
     "microsoft/microsoft-graph": "dev-dev",
-    "ps/image-optimizer": "dev-master"
+    "ps/image-optimizer": "^2.0.5"
   }
 }
