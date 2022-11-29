@@ -98,30 +98,30 @@ class GetLinkFunction
         $result = array('provider' => null, 'code' => null, 'status' => FALSE);
 
         $regex = [
-            HOST_FSHARE_VN          => ["/fshare.vn\/file\/(\w{1,})/"]
-            , HOST_4SHARE_VN        => ["/4share.vn\/f\/(\w{1,})/"]
-            , HOST_ZIPPYSHARE_COM   => ["/zippyshare.com\/v\/([0-9a-zA-Z]+)\/file.html/"]
-            , HOST_ALFAFILE_NET     => ["/alfafile.net\/file\/([0-9a-zA-Z]+)/"]
-            , HOST_EXTMATRIX_COM    => ["/extmatrix.com\/files\/([0-9a-zA-Z]+)/"]
+            HOST_FSHARE_VN          => ['/fshare.vn\/file\/(\w{1,})/']
+            , HOST_4SHARE_VN        => ['/4share.vn\/f\/(\w{1,})/']
+            , HOST_ZIPPYSHARE_COM   => ['/zippyshare.com\/v\/([0-9a-zA-Z]+)\/file.html/']
+            , HOST_ALFAFILE_NET     => ['/alfafile.net\/file\/([0-9a-zA-Z]+)/']
+            , HOST_EXTMATRIX_COM    => ['/extmatrix.com\/files\/([0-9a-zA-Z]+)/']
             //, HOST_DATAFILE_COM     => ["/datafile.com\/d\/([0-9a-zA-Z]+)/"]
             //, HOST_DEPFILE_COM      => ["/depfile.com\/([0-9a-zA-Z]+)/"]
             //, HOST_DEPOSITFILES_COM => ["/depositfiles.com\/files\/([0-9a-zA-Z]+)/"]
             //, HOST_FILEFACTORY_COM  => ["/filefactory.com\/file\/([0-9a-zA-Z]+)/"]
-            , HOST_FILENEXT_COM     => ["/filenext.com\/([0-9a-zA-Z]+)/"]
-            , HOST_HITFILE_NET      => ["/hitfile.net\/([0-9a-zA-Z]+)/", "/hil.to\/([0-9a-zA-Z]+)/"]
-            , HOST_KATFILE_COM      => ["/katfile.com\/([0-9a-zA-Z]+)/"]
-            , HOST_KEEP2SHARE_CC    => ["/keep2share.cc\/file\/([0-9a-zA-Z]+)/", "/k2s.cc\/file\/([0-9a-zA-Z]+)/", "/keep2s.cc\/file\/([0-9a-zA-Z]+)/", "/k2share.cc\/file\/([0-9a-zA-Z]+)/"]
-            , HOST_NITROFLARE_COM   => ["/nitroflare.com\/view\/([0-9a-zA-Z]+)/", '/nitro.download\/view\/([0-9a-zA-Z]+)/']
-            , HOST_UPLOADED_NET     => ["/uploaded.net\/file\/([0-9a-zA-Z]+)/", "/uploaded.to\/file\/([0-9a-zA-Z]+)/", "/ul.to\/([0-9a-zA-Z]+)/"]
-            , HOST_UPLOADGIG_COM    => ["/uploadgig.com\/file\/download\/([0-9a-zA-Z]+)/"]
-            , HOST_UPTOBOX_COM      => ["/uptobox.com\/([0-9a-zA-Z]+)/"]
-            , HOST_PREFILES_COM     => ["/prefiles.com\/([0-9a-zA-Z]+)/"]
-            , HOST_RAPIDGATOR_NET   => ["/rapidgator.net\/file\/([0-9a-zA-Z]+)/", "/rg.to\/file\/([0-9a-zA-Z]+)/"]
+            , HOST_FILENEXT_COM     => ['/filenext.com\/([0-9a-zA-Z]+)/']
+            , HOST_HITFILE_NET      => ['/hitfile.net\/([0-9a-zA-Z]+)/', '/hil.to\/([0-9a-zA-Z]+)/']
+            , HOST_KATFILE_COM      => ['/katfile.com\/([0-9a-zA-Z]+)/']
+            , HOST_KEEP2SHARE_CC    => ['/keep2share.cc\/file\/([0-9a-zA-Z]+)/', '/k2s.cc\/file\/([0-9a-zA-Z]+)/', '/keep2s.cc\/file\/([0-9a-zA-Z]+)/', '/k2share.cc\/file\/([0-9a-zA-Z]+)/']
+            , HOST_NITROFLARE_COM   => ['/nitroflare.com\/view\/([0-9a-zA-Z]+)/', '/nitro.download\/view\/([0-9a-zA-Z]+)/']
+            , HOST_UPLOADED_NET     => ['/uploaded.net\/file\/([0-9a-zA-Z]+)/', '/uploaded.to\/file\/([0-9a-zA-Z]+)/', '/ul.to\/([0-9a-zA-Z]+)/']
+            , HOST_UPLOADGIG_COM    => ['/uploadgig.com\/file\/download\/([0-9a-zA-Z]+)/']
+            , HOST_UPTOBOX_COM      => ['/uptobox.com\/([0-9a-zA-Z]+)/']
+            , HOST_PREFILES_COM     => ['/prefiles.com\/([0-9a-zA-Z]+)/']
+            , HOST_RAPIDGATOR_NET   => ['/rapidgator.net\/file\/([0-9a-zA-Z]+)/', '/rg.to\/file\/([0-9a-zA-Z]+)/']
             , HOST_TURBOBIT_NET     => ['/turbobit.net\/([0-9a-zA-Z]+\.html)/', '/turboget.net\/([0-9a-zA-Z]+\.html)/', '/turb.cc\/([0-9a-zA-Z]+\.html)/']
-            , HOST_1FICHIER_COM     => ["/1fichier.com\/\?([0-9a-zA-Z]+)/"]
-            , HOST_GOOGLE_DRIVE_COM => ["/drive.google.com\/file\/d\/([0-9a-zA-Z-_=.]+)/", "/drive.google.com\/open\?id=([0-9a-zA-Z-_=.]+)/"]
-            , HOST_ONEDRIVE_COM     => ["/sharepoint.com\/.*\/download.aspx\?share=([\w\_\-\+]+)/"]
-            , HOST_VNLINKS_NET      => ["/vnlinks.net\/file\/(\w{1,})/"]
+            , HOST_1FICHIER_COM     => ['/1fichier.com\/\?([0-9a-zA-Z]+)/']
+            , HOST_GOOGLE_DRIVE_COM => ['/drive.google.com\/file\/d\/([0-9a-zA-Z-_=.]+)/', '/drive.google.com\/open\?id=([0-9a-zA-Z-_=.]+)/']
+            , HOST_ONEDRIVE_COM     => ['/sharepoint.com\/.*\/download.aspx\?share=([\w\_\-\+]+)/']
+            , HOST_VNLINKS_NET      => ['/vnlinks.net\/file\/(\w{1,})/']
         ];
 
         foreach ($regex as $provider => $arrRegx) {
@@ -210,7 +210,7 @@ class GetLinkFunction
      * @param null $path request-getlink, request-getlink-directly
      * @return string
      */
-    public static function getDomainGetLinkFromServerName($server, $path=null)
+    public static function getDomainGetLinkFromServerName($server, $path = null)
     {
         $result = 'http://' . self::removeSchemeURL($server) . ':81';
         if (strlen($path) > 0) {
@@ -259,7 +259,7 @@ class GetLinkFunction
      */
     public static function removeSchemeURL($url)
     {
-        $parse = parse_url($url);
+        $parse  = parse_url($url);
         $scheme = $parse['scheme'] ?? null;
 
         // Skip if not exist scheme
