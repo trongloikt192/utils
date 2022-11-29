@@ -26,14 +26,15 @@ class GetLinkFunction
      */
     public static function g_getShortUrl($link, $ip)
     {
-        $linkEncode   = base64_encode($link);
+        $longURL      = urlencode($link);
         $providerList = [
             // "http://ouo.io/api/UqgBB0RM?s={$link}",
             // "http://shink.in/stxt/0/id/132106/auth_token/uqBeFx?s={$link}",
             // "http://shink.in/stxt/0/id/140178/auth_token/4ETc03?s={$link}",
             // "http://short.am/s/17768?s={$link}",
-            "https://licklink.net/full/?api=0d2bedbae872e4f3db38bba8917a81828ae4132b&url={$linkEncode}&type=2",
-            "https://123link.pw/full/?api=fd886e7c09b3d9dc09aafbfa7cda474465b5030c&url={$linkEncode}&type=2",
+            // "https://licklink.net/full/?api=0d2bedbae872e4f3db38bba8917a81828ae4132b&url={$linkEncode}&type=2",
+            // "https://123link.pw/full/?api=fd886e7c09b3d9dc09aafbfa7cda474465b5030c&url={$linkEncode}&type=2",
+            "https://link4m.co/api-shorten/v2?api=63773e752fc559675a34d1c5&url={$longURL}"
         ];
 
         // CHỌN RA QUẢNG CÁO KẾ TIẾP
