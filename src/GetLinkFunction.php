@@ -48,29 +48,17 @@ class GetLinkFunction
             $nextStackNumber = 0;
         }
         Cache::put($cacheKey, $nextStackNumber, Carbon::tomorrow());
-        return $providerList[$stackNumber];
 
-        /* UPDATE 2019-02-09 : Trả trực tiếp link, bỏ qua bước call api, để tăng tốc độ
-         *
-        // Get cURL resource
-        $curl = curl_init();
-        // Set some options - we are passing in a useragent too here
-        curl_setopt_array($curl, array(
-            CURLOPT_RETURNTRANSFER  => 1,
-            CURLOPT_URL             => $url,
-            CURLOPT_USERAGENT       => 'Mozilla/5.0 (Windows NT 10.0; WOW64; rv:46.0) Gecko/20100101 Firefox/46.0'
-        ));
-        // Send the request & save response to $resp
-        $res = curl_exec($curl);
-        // Close request to clear up some resources
-        curl_close($curl);
-
-        $shortLink = json_decode($res, 1);
-        if (isset($shortLink['shortenedUrl']) && !empty($shortLink['shortenedUrl'])) {
-            return $shortLink['shortenedUrl'];
+        // Get ads link
+        $requestURL = $providerList[$stackNumber];
+        $result     = @json_decode(file_get_contents($requestURL),TRUE);
+        if($result["status"] !== 'success') {
+            $adsLink = $link;
+        } else {
+            $adsLink = $result["shortenedUrl"];
         }
 
-        return $res;*/
+        return $adsLink;
     }
 
     /**
