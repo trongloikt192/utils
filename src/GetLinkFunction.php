@@ -28,13 +28,14 @@ class GetLinkFunction
     {
         $longURL      = urlencode($link);
         $providerList = [
-            // "http://ouo.io/api/UqgBB0RM?s={$link}",
+             "http://ouo.io/api/UqgBB0RM?s={$link}",
             // "http://shink.in/stxt/0/id/132106/auth_token/uqBeFx?s={$link}",
             // "http://shink.in/stxt/0/id/140178/auth_token/4ETc03?s={$link}",
             // "http://short.am/s/17768?s={$link}",
             // "https://licklink.net/full/?api=0d2bedbae872e4f3db38bba8917a81828ae4132b&url={$linkEncode}&type=2",
-            // "https://123link.pw/full/?api=fd886e7c09b3d9dc09aafbfa7cda474465b5030c&url={$linkEncode}&type=2",
-            "https://link4m.co/api-shorten/v2?api=63773e752fc559675a34d1c5&url={$longURL}"
+            // "https://link4m.co/api-shorten/v2?api=63773e752fc559675a34d1c5&url={$longURL}",
+            // "https://link1s.com/api?api=d81b6b59b1b20102eb7a37ee79241f146a80e129&url={$longURL}",
+            "https://megaurl.io/api?api=5b71f70c40494e1a3e884e3606b018eef2d09ac1&url={$longURL}"
         ];
 
         // CHỌN RA QUẢNG CÁO KẾ TIẾP
@@ -51,7 +52,11 @@ class GetLinkFunction
 
         // Get ads link
         $requestURL = $providerList[$stackNumber];
-        $result     = @json_decode(file_get_contents($requestURL),TRUE);
+        if ($stackNumber == 0) {
+            return $requestURL;
+        }
+
+        $result = @json_decode(file_get_contents($requestURL),TRUE);
         if($result["status"] !== 'success') {
             $adsLink = $link;
         } else {
