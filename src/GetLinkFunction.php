@@ -35,7 +35,7 @@ class GetLinkFunction
             // "https://licklink.net/full/?api=0d2bedbae872e4f3db38bba8917a81828ae4132b&url={$linkEncode}&type=2",
             // "https://link4m.co/api-shorten/v2?api=63773e752fc559675a34d1c5&url={$longURL}",
             // "https://link1s.com/api?api=d81b6b59b1b20102eb7a37ee79241f146a80e129&url={$longURL}",
-            "https://megaurl.io/api?api=5b71f70c40494e1a3e884e3606b018eef2d09ac1&url={$longURL}"
+            // "https://megaurl.io/api?api=5b71f70c40494e1a3e884e3606b018eef2d09ac1&url={$longURL}"
         ];
 
         // CHỌN RA QUẢNG CÁO KẾ TIẾP
