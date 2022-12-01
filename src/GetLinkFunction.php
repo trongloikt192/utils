@@ -53,7 +53,7 @@ class GetLinkFunction
         // Get ads link
         $requestURL = $providerList[$stackNumber];
         if ($stackNumber == 0) {
-            return $requestURL;
+            return file_get_contents($requestURL);
         }
 
         $result = @json_decode(file_get_contents($requestURL),TRUE);
