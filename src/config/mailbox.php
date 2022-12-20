@@ -15,11 +15,11 @@ const MAIL_NOTIFY_TRANSACTION_INVALID = 'noti003';
 const MAIL_NOTIFY_DELETE_POST         = 'noti004';
 
 // Re-upload
-const MAIL_NOTIFY_REUP_UPLOADER_ACCEPT_TO_USER     = 'noti005a';
-const MAIL_NOTIFY_REUP_UPLOADER_ACCEPT_TO_UPLOADER = 'noti005b';
-const MAIL_NOTIFY_REUP_UPLOADER_SUBMIT_RESULT      = 'noti006';
-const MAIL_NOTIFY_REUP_ADMIN_CONFIRM_TO_USER       = 'noti007a';
-const MAIL_NOTIFY_REUP_ADMIN_CONFIRM_TO_UPLOADER   = 'noti007b';
-const MAIL_NOTIFY_REUP_FAILURE_TO_USER             = 'noti008a';
-const MAIL_NOTIFY_REUP_FAILURE_TO_UPLOADER         = 'noti008b';
-const MAIL_NOTIFY_REUP_USER_REQUEST                = 'noti009';
+const MAIL_REUP_USER_REQUEST                = 'reup001a';
+const MAIL_REUP_UPLOADER_ACCEPT_TO_USER     = 'reup002a';
+const MAIL_REUP_UPLOADER_ACCEPT_TO_UPLOADER = 'reup002b';
+const MAIL_REUP_UPLOADER_SUBMIT_RESULT      = 'reup003a';
+const MAIL_REUP_SUCCESS_TO_USER             = 'reup004a';
+const MAIL_REUP_SUCCESS_TO_UPLOADER         = 'reup004b';
+const MAIL_REUP_FAILURE_TO_USER             = 'reup005a';
+const MAIL_REUP_FAILURE_TO_UPLOADER         = 'reup005b';
