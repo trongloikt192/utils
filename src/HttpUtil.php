@@ -213,7 +213,7 @@ class HttpUtil
         }
 
         $guzzleClient = new GuzzleClient($config);
-        $client       = new Client(null, null, $cookies);
+        $client       = new Client([], null, $cookies);
         $client->setClient($guzzleClient);
         $client->setHeader('User-Agent', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 11_2_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.141 Safari/537.36 Edg/87.0.664.75');
         $client->setHeader('Accept-Language', 'en');
