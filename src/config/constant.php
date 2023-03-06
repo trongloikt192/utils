@@ -27,14 +27,14 @@ const RCLONE_TYPE_NITROFLARE = 'nitroflare';
 const RCLONE_TYPE_RAPIDGATOR = 'rapidgator';
 
 // Log levels
-const LOG_LEVEL_EMERGENCY = 1;
-const LOG_LEVEL_ALERT     = 2;
-const LOG_LEVEL_CRITICAL  = 3;
-const LOG_LEVEL_ERROR     = 4;
-const LOG_LEVEL_WARNING   = 5;
-const LOG_LEVEL_NOTICE    = 6;
-const LOG_LEVEL_INFO      = 7;
-const LOG_LEVEL_DEBUG     = 8;
+const LOG_LEVEL_EMERGENCY = 0;
+const LOG_LEVEL_ALERT     = 1;
+const LOG_LEVEL_CRITICAL  = 2;
+const LOG_LEVEL_ERROR     = 3;
+const LOG_LEVEL_WARNING   = 4;
+const LOG_LEVEL_NOTICE    = 5;
+const LOG_LEVEL_INFO      = 6;
+const LOG_LEVEL_DEBUG     = 7;
 
 /*===========================================================================*/
 /*                                   CACHE                                   */
