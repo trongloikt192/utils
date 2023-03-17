@@ -20,11 +20,21 @@ const WATERMARK_SM_WIDTH = 400;         //pixel
 const WATERMARK_MD_WIDTH = 800;         //pixel
 
 // Rclone type
-const RCLONE_TYPE_GDRIVE   = 'drive';
-const RCLONE_TYPE_ONEDRIVE = 'onedrive';
-const RCLONE_TYPE_1FICHIER = 'fichier';
+const RCLONE_TYPE_GDRIVE     = 'drive';
+const RCLONE_TYPE_ONEDRIVE   = 'onedrive';
+const RCLONE_TYPE_1FICHIER   = 'fichier';
 const RCLONE_TYPE_NITROFLARE = 'nitroflare';
 const RCLONE_TYPE_RAPIDGATOR = 'rapidgator';
+
+// Log levels
+const LOG_LEVEL_EMERGENCY = 0;
+const LOG_LEVEL_ALERT     = 1;
+const LOG_LEVEL_CRITICAL  = 2;
+const LOG_LEVEL_ERROR     = 3;
+const LOG_LEVEL_WARNING   = 4;
+const LOG_LEVEL_NOTICE    = 5;
+const LOG_LEVEL_INFO      = 6;
+const LOG_LEVEL_DEBUG     = 7;
 
 /*===========================================================================*/
 /*                                   CACHE                                   */
