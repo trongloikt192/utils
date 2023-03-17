@@ -3,6 +3,7 @@
 namespace trongloikt192\Utils;
 
 
+use Illuminate\Support\Facades\File;
 use trongloikt192\Utils\Entities\RcloneEntity;
 use trongloikt192\Utils\Exceptions\UtilException;
 
@@ -51,7 +52,9 @@ class RcloneUtil
 
         return [
             'storage_total' => $json['total'] ?? null,
-            'storage_usage' => $json['used'] ?? null
+            'storage_usage' => $json['used'] ?? null,
+            'storage_free'  => $json['free'] ?? null,
+            'storage_trash' => $json['trashed'] ?? null,
         ];
     }
 
@@ -241,6 +244,25 @@ class RcloneUtil
     public function exportEntityArray()
     {
         return (array)$this->entity;
+    }
+
+    /**
+     * Check dung lượng storage còn đủ chứa file hay không
+     * @param $filePath
+     * @return bool
+     */
+    public function checkStorageFreeSpace($filePath)
+    {
+        $size = File::size($filePath);
+
+        $about = $this->about();
+        $free = $about['storage_free'] ?? 0;
+
+        if ($size < $free) {
+            return true;
+        }
+
+        return false;
     }
 
     /**
