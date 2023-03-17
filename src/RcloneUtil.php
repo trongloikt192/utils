@@ -48,6 +48,9 @@ class RcloneUtil
         if (strlen($cmd) > 0) {
             $out  = shell_exec($cmd);
             $json = json_decode($out, true);
+
+            // Total = 0 => set default = 100TB
+            $json['total'] = $json['total'] == 0 ? 100000000000000 : $json['total'];
         }
 
         return [
