@@ -31,11 +31,12 @@ class HttpUtil
             curl_setopt($ch, CURLOPT_PROXY, $proxy);
         }
         curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
         curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.2) Gecko/20070219 Firefox/2.0.0.2');
-        curl_setopt($ch, CURLOPT_HEADER, 0);
         curl_setopt($ch, CURLOPT_TIMEOUT, 60);
+        curl_setopt($ch, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
+        curl_setopt($ch, CURLOPT_MAXREDIRS, 10);
         if (isset($cookie_jar)) {
-            curl_setopt($ch, CURLOPT_COOKIE, 1);
             curl_setopt($ch, CURLOPT_COOKIEJAR, $cookie_jar);
             curl_setopt($ch, CURLOPT_COOKIEFILE, $cookie_jar);  // <-- add this line
         }
