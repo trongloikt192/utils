@@ -23,3 +23,6 @@ const MAIL_REUP_SUCCESS_TO_USER             = 'reup004a';
 const MAIL_REUP_SUCCESS_TO_UPLOADER         = 'reup004b';
 const MAIL_REUP_FAILURE_TO_USER             = 'reup005a';
 const MAIL_REUP_FAILURE_TO_UPLOADER         = 'reup005b';
+
+// Get link error
+const MAIL_GETLINK_ERROR_ADMIN = 'getlink001';
