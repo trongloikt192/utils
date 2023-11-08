@@ -156,6 +156,12 @@ class GetLinkFunction
                 return "https://fshare.vn/file/{$code}";
             case HOST_GOOGLE_DRIVE_COM:
                 return "https://drive.google.com/file/d/{$code}";
+            case HOST_NITROFLARE_COM:
+                return "https://nitroflare.com/view/{$code}";
+            case HOST_RAPIDGATOR_NET:
+                return "https://rapidgator.net/file/{$code}";
+            case HOST_ALFAFILE_NET:
+                return "https://alfafile.net/file/{$code}";
         }
         return null;
     }
