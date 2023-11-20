@@ -438,15 +438,15 @@ class GetLinkFunction
             // GET FILE SIZE & NAME
             $response = $client->checkLink(implode(',', $linkList));
             foreach ($response as $file) {
-                if ($file['status'] != 'ACCESS') {
+                if ($file->status != 'ACCESS') {
                     continue;
                 }
 
                 $code = self::detectCodeFromLink($file['url']);
                 $result[$code] = [
-                    'url'      => $file['url'],
-                    'filename' => $file['filename'],
-                    'filesize' => $file['size'],
+                    'url'      => $file->url,
+                    'filename' => $file->filename,
+                    'filesize' => $file->size,
                 ];
             }
         } catch (\Exception $e) {
