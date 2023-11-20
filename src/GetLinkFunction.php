@@ -342,7 +342,7 @@ class GetLinkFunction
 
         // Group list link by provider
         foreach ($linkList as $link) {
-            $provider = self::detectProviderFromLink($linkList);
+            $provider = self::detectProviderFromLink($link);
             if (isset($groupLinks[$provider])) {
                 $groupLinks[$provider][] = $link;
             } else {
