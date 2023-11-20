@@ -442,7 +442,7 @@ class GetLinkFunction
                     continue;
                 }
 
-                $code = self::detectCodeFromLink($file['url']);
+                $code = self::detectCodeFromLink($file->url);
                 $result[$code] = [
                     'url'      => $file->url,
                     'filename' => $file->filename,
