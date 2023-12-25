@@ -30,7 +30,7 @@
     "google/apiclient-services": "^0.254.0",
     "intervention/image": "^2.7.2",
     "league/flysystem-aws-s3-v3": "^1.0",
-    "microsoft/microsoft-graph": "dev-dev",
+    "microsoft/microsoft-graph": "1.109.2",
     "ps/image-optimizer": "^2.0.5",
     "tinify/tinify": "^1.5.3",
 
