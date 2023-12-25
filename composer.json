@@ -24,7 +24,7 @@
   "require": {
     "php": "^8.0",
     "laravel/framework": "^8.3.1",
-    "fabpot/goutte": "^4.0.3",
+    "fabpot/goutte": "^3.3.1",
     "firebase/php-jwt": "^6.2.0",
     "google/apiclient": "^2.12.6",
     "google/apiclient-services": "^0.254.0",
