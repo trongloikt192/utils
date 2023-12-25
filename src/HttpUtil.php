@@ -9,10 +9,10 @@
 namespace trongloikt192\Utils;
 
 use Goutte\Client;
-use GuzzleHttp\Client as GuzzleClient;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\BrowserKit\Cookie;
 use Symfony\Component\BrowserKit\CookieJar;
+use Symfony\Component\HttpClient\HttpClient;
 use trongloikt192\Utils\Exceptions\UtilException;
 
 class HttpUtil
@@ -213,17 +213,17 @@ class HttpUtil
             $url .= '?'.http_build_query($parameters);
         }
 
-        $guzzleClient = new GuzzleClient($config);
-        $client       = new Client([], null, $cookies);
-        $client->setClient($guzzleClient);
-        $client->setHeader('User-Agent', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 11_2_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.141 Safari/537.36 Edg/87.0.664.75');
-        $client->setHeader('Accept-Language', 'en');
-
-        if (isset($options['headers']) && !empty($options['headers'])) {
+        $config['headers'] = [
+            'User-Agent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 11_2_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.141 Safari/537.36 Edg/87.0.664.75',
+            'Accept-Language' => 'en'
+        ];
+        if (!empty($options['headers'])) {
             foreach ($options['headers'] as $key => $value) {
-                $client->setHeader($key, $value);
+                $config['headers'][$key] = $value;
             }
         }
+        $guzzleClient = HttpClient::create($config);
+        $client       = new Client($guzzleClient, null, $cookies);
 
         if (isset($options['isRequestJson']) && $options['isRequestJson'] == true) {
             $client->request($method, $url, array(), array(), array('HTTP_CONTENT_TYPE' => 'application/json'), json_encode($parameters));
@@ -364,11 +364,14 @@ class HttpUtil
         if (isset($proxy)) {
             $config['proxy'] = ['http' => $proxy, 'https' => $proxy];
         }
-        $guzzleClient = new GuzzleClient($config);
-        $client       = new Client();
-        $client->setClient($guzzleClient);
-        $client->setHeader('User-Agent', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 11_2_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.141 Safari/537.36 Edg/87.0.664.75');
-        $client->setHeader('Accept-Language', 'en');
+
+        $config['headers'] = [
+            'User-Agent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 11_2_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.141 Safari/537.36 Edg/87.0.664.75',
+            'Accept-Language' => 'en'
+        ];
+
+        $guzzleClient = HttpClient::create($config);
+        $client       = new Client($guzzleClient);
         $crawler = $client->request('GET', $url);
         if (isset($form_filter)) {
             $form = $crawler->filter($form_filter)->form();
