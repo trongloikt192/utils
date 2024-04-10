@@ -24,7 +24,7 @@ class JwtAuth
      */
     public static function parse($accessKey)
     {
-        $credentials = JWT::decode($accessKey, new Key(env('JWT_SECRET'), env('JWT_ALGO')));
+        $credentials = JWT::decode($accessKey, new Key(config('jwt.secret'), config('jwt.algo')));
         self::$userId = $credentials->id;
         self::$userRole = $credentials->role_id;
         self::$userEmail = $credentials->email;

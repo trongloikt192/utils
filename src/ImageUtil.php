@@ -114,7 +114,7 @@ class ImageUtil
     public static function compressing($imgPath, $destPath)
     {
         try {
-            \Tinify\setKey(env('TINIFY_API_KEY'));
+            \Tinify\setKey(config('services.tinify.api_key'));
             \Tinify\validate();
             $source = \Tinify\fromFile($imgPath);
             $source->toFile($destPath);

@@ -26,8 +26,8 @@ class XApiAuth
         }
 
         // Decrypt XApiKey by HASH_ACCESS_KEY and check HASH_SECRET_KEY is valid
-        $accessKey = env('X_API_ACCESS_KEY');
-        $secretKey = env('X_API_SECRET_KEY');
+        $accessKey = config('xapi.access_key');
+        $secretKey = config('xapi.secret_key');
         $encoded   = base64_decode($XApiKey);
         $decoded   = '';
         for ($i = 0, $iMax = strlen($encoded); $i < $iMax; $i++) {
@@ -52,8 +52,8 @@ class XApiAuth
      */
     public static function make()
     {
-        $accessKey = env('X_API_ACCESS_KEY');
-        $secretKey = env('X_API_SECRET_KEY');
+        $accessKey = config('xapi.access_key');
+        $secretKey = config('xapi.secret_key');
         $msg       = $secretKey .':'. round(microtime(true) * 1000);
         $msgBase64 = base64_encode($msg);
         $encoded = '';

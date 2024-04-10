@@ -20,7 +20,7 @@ class InternalRequest
      */
     public static function docs($method, $path, $parameter = []): array
     {
-        $url = self::formatURL(env('X_API_DOCS_URL'), $path);
+        $url = self::formatURL(config('xapi.docs_url'), $path);
         return self::request($method, $url, $parameter);
     }
 
@@ -34,7 +34,7 @@ class InternalRequest
      */
     public static function master($method, $path, $parameter = [])
     {
-        $url = self::formatURL(env('X_API_MASTER_URL'), $path);
+        $url = self::formatURL(config('xapi.master_url'), $path);
         return self::request($method, $url, $parameter);
     }
 
@@ -77,7 +77,7 @@ class InternalRequest
      */
     public static function mailbox($code, $sendTo, $data)
     {
-        $url = self::formatURL(env('X_API_MAILBOX_URL'), '/send');
+        $url = self::formatURL(config('xapi.mailbox_url'), '/send');
         $requestBody = compact('code', 'sendTo', 'data');
         return self::request('POST', $url, $requestBody);
     }
@@ -106,7 +106,7 @@ class InternalRequest
      */
     public static function crawler($method, $path, $parameter)
     {
-        $url = self::formatURL(env('X_API_CRAWLER_URL'), $path);
+        $url = self::formatURL(config('xapi.crawler_url'), $path);
         return self::request($method, $url, $parameter);
     }
 
@@ -138,7 +138,7 @@ class InternalRequest
      */
     public static function uploadFileToDocs($path, $filePath, $parameters = []): array
     {
-        $url = self::formatURL(env('X_API_DOCS_URL'), $path);
+        $url = self::formatURL(config('xapi.docs_url'), $path);
         return self::uploadFile($url, $filePath, $parameters);
     }
 
@@ -151,7 +151,7 @@ class InternalRequest
      */
     public static function uploadFileToMaster($path, $filePath, $parameters = []): array
     {
-        $url = self::formatURL(env('X_API_MASTER_URL'), $path);
+        $url = self::formatURL(config('xapi.master_url'), $path);
         return self::uploadFile($url, $filePath, $parameters);
     }
 

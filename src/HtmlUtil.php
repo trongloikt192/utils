@@ -176,7 +176,7 @@ class HtmlUtil
             return $path;
         }
 
-        return env('MINIO_ENDPOINT') .'/'. env('MINIO_BUCKET') .'/'. sprintf($path, DISP_SM);
+        return config('services.minio.endpoint') .'/'. config('services.minio.bucket') .'/'. sprintf($path, DISP_SM);
     }
 
     /**
@@ -187,7 +187,7 @@ class HtmlUtil
      */
     public static function replaceImgInContent($content)
     {
-        $minio   = env('MINIO_ENDPOINT') . '/' . env('MINIO_BUCKET');
+        $minio   = config('services.minio.endpoint') . '/' . config('services.minio.bucket');
         $search  = '/(uploads\/post\/\d+\/img\/disp\/content\/\w+)%s(\.\w+)/';
         $replace = $minio . '/$1' . DISP_SM . '$2';
 
