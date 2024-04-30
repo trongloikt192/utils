@@ -244,14 +244,14 @@ class GetLinkFunction
     /**
      * Return getlink address
      * //http://download01.vnlinks.net:81/<path> <-- old
-     * https://download01.vnlinks.net/forward/<path> <-- new
+     * https://download01.vnlinks.net/<path> <-- new
      * @param $server
      * @param null $path request-getlink, request-getlink-directly
      * @return string
      */
     public static function getDomainGetLinkFromServerName($server, $path = null)
     {
-        $result = 'https://' . self::removeSchemeURL(trim($server, '/')) . '/forward';
+        $result = 'https://' . self::removeSchemeURL(trim($server, '/'));
         if (strlen($path) > 0) {
             $result .= '/' . ltrim($path, '/');
         }
