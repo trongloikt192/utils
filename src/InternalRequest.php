@@ -122,6 +122,17 @@ class InternalRequest
         $crawler    = HttpUtil::g_goutteRequest($method, $url, $parameters, null, ['headers' => $httpHeader]);
         $response   = $crawler->getResponse();
 
+        if ($response->getStatusCode() != 200) {
+            logger()->error(
+                'InternalRequest Error' . PHP_EOL .
+                'URL       : ' . $url . PHP_EOL .
+                'Method    : ' . $method . PHP_EOL .
+                'X-Api-Key : ' . $httpHeader['X-Api-Key'] . PHP_EOL .
+                'Parameters: ' . json_encode($parameters) . PHP_EOL .
+                'Response  : ' . $response->getContent() . PHP_EOL
+            );
+        }
+
         return [
             $response->getContent(),
             $response->getStatusCode(),
