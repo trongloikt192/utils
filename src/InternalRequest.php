@@ -11,6 +11,7 @@ namespace trongloikt192\Utils;
 class InternalRequest
 {
     const PREFIX_INTERNAL_API_PATH = '/api/internal/';
+    const PREFIX_INTERNAL_PATH     = '/internal/';
 
     /**
      * @param string $method
@@ -34,7 +35,7 @@ class InternalRequest
      */
     public static function master($method, $path, $parameter = [])
     {
-        $url = self::formatURL(config('xapi.master_url'), $path);
+        $url = self::formatURL(config('xapi.master_url'), $path, self::PREFIX_INTERNAL_PATH);
         return self::request($method, $url, $parameter);
     }
 
@@ -222,10 +223,10 @@ class InternalRequest
      * @param string $path
      * @return string
      */
-    private static function formatURL($domain, $path)
+    private static function formatURL($domain, $path, $prefix = self::PREFIX_INTERNAL_API_PATH)
     {
         $domain = rtrim($domain, '/');
-        $domain .= self::PREFIX_INTERNAL_API_PATH;
+        $domain .= $prefix;
         $domain .= ltrim($path, '/');
         return $domain;
     }
