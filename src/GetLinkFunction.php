@@ -408,6 +408,7 @@ class GetLinkFunction
                     'url'      => $file['url'],
                     'filename' => $file['name'],
                     'filesize' => $file['size'],
+                    'mimetype' => Helper::getMimeType($file['name'])
                 ];
             }
         }
@@ -448,6 +449,7 @@ class GetLinkFunction
                     'url'      => $file->url,
                     'filename' => $file->filename,
                     'filesize' => $file->size,
+                    'mimetype' => Helper::getMimeType($file['name'])
                 ];
             }
         } catch (\Exception $e) {
