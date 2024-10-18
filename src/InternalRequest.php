@@ -112,6 +112,20 @@ class InternalRequest
     }
 
     /**
+     * Request to payment service
+     *
+     * @param $method
+     * @param string $path
+     * @param array $parameter
+     * @return array
+     */
+    public static function payment($method, $path, $parameter)
+    {
+        $url = self::formatURL(config('xapi.payment_url'), $path);
+        return self::request($method, $url, $parameter);
+    }
+
+    /**
      * @param string $method
      * @param string $url
      * @param array $parameters
