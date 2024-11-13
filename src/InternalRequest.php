@@ -237,7 +237,7 @@ class InternalRequest
      * @param string $path
      * @return string
      */
-    private static function formatURL($domain, $path, $prefix = self::PREFIX_INTERNAL_API_PATH)
+    public static function formatURL($domain, $path, $prefix = self::PREFIX_INTERNAL_API_PATH)
     {
         $domain = rtrim($domain, '/');
         $domain .= $prefix;
