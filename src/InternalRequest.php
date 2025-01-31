@@ -126,6 +126,20 @@ class InternalRequest
     }
 
     /**
+     * Request to file service
+     *
+     * @param $method
+     * @param string $path
+     * @param array $parameter
+     * @return array
+     */
+    public static function files($method, $path, $parameter)
+    {
+        $url = self::formatURL(config('xapi.files_url'), $path);
+        return self::request($method, $url, $parameter);
+    }
+
+    /**
      * @param string $method
      * @param string $url
      * @param array $parameters
