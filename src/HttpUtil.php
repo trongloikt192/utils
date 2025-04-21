@@ -156,6 +156,13 @@ class HttpUtil
             ]
         );
 
+        // Set custom headers if provided
+        if (isset($options['headers']) && !empty($options['headers'])) {
+            foreach ($options['headers'] as $key => $value) {
+                $config['headers'][$key] = $value;
+            }
+        }
+
         if (isset($options['proxy']) && !empty($options['proxy'])) {
             $config['proxy'] = ['http' => $options['proxy'], 'https' => $options['proxy']];
         }
@@ -196,13 +203,6 @@ class HttpUtil
         }
 
         $browser = new HttpBrowser(HttpClient::createForBaseUri($url, $config), null, $cookies);
-
-        // Set custom headers if provided
-        if (isset($options['headers']) && !empty($options['headers'])) {
-            foreach ($options['headers'] as $key => $value) {
-                $browser->setServerParameter('HTTP_' . strtoupper(str_replace('-', '_', $key)), $value);
-            }
-        }
 
         // Handle request with different content types
         if (isset($options['isRequestJson']) && $options['isRequestJson'] == true) {
