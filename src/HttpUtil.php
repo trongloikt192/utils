@@ -8,11 +8,12 @@
 
 namespace trongloikt192\Utils;
 
-use Goutte\Client;
 use GuzzleHttp\Client as GuzzleClient;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\BrowserKit\Cookie;
 use Symfony\Component\BrowserKit\CookieJar;
+use Symfony\Component\BrowserKit\HttpBrowser;
+use Symfony\Component\HttpClient\HttpClient;
 use trongloikt192\Utils\Exceptions\UtilException;
 
 class HttpUtil
@@ -38,7 +39,7 @@ class HttpUtil
         curl_setopt($ch, CURLOPT_MAXREDIRS, 10);
         if (isset($cookie_jar)) {
             curl_setopt($ch, CURLOPT_COOKIEJAR, $cookie_jar);
-            curl_setopt($ch, CURLOPT_COOKIEFILE, $cookie_jar);  // <-- add this line
+            curl_setopt($ch, CURLOPT_COOKIEFILE, $cookie_jar);
         }
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
@@ -85,7 +86,7 @@ class HttpUtil
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         if (isset($cookie_jar)) {
             curl_setopt($ch, CURLOPT_COOKIEJAR, $cookie_jar);
-            curl_setopt($ch, CURLOPT_COOKIEFILE, $cookie_jar);  // <-- add this line
+            curl_setopt($ch, CURLOPT_COOKIEFILE, $cookie_jar);
         }
         curl_setopt($ch, CURLOPT_REFERER, $url);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $postdata);
@@ -93,33 +94,10 @@ class HttpUtil
         curl_setopt($ch, CURLOPT_HTTPHEADER, ['Accept-Language: en']);
         if ($redirect == true) {
             curl_setopt($ch, CURLOPT_TIMEOUT, 10);
-            // curl_setopt($ch, CURLOPT_NOBODY, true);
             curl_setopt($ch, CURLOPT_HTTPHEADER, ['Connection: Close']);
         }
         $response = curl_exec($ch);
         if ($redirect == true) {
-            // $loop = 5;
-            // $newurl = curl_getinfo ($ch, CURLINFO_EFFECTIVE_URL);
-            // curl_setopt($ch, CURLOPT_HEADER, true);
-            // curl_setopt($ch, CURLOPT_FORBID_REUSE, false);
-            // do {
-            //     curl_setopt($ch, CURLOPT_URL, $newurl);
-            //     $header = curl_exec($ch);
-            //     print_r($newurl); echo "\n";
-            //     if (curl_errno($ch)) {
-            //         $code = 0;
-            //     } else {
-            //         $code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-            //         echo $code; echo "\n";
-            //         if ($code == 301 || $code == 302) {
-            //             preg_match('/Location:(.*?)\n/', $header, $matches);
-            //             $newurl = trim(array_pop($matches));
-            //         } else {
-            //             $code = 0;
-            //         }
-            //     }
-            // } while($code && --$loop);
-            // print_r($newurl); echo "\n";
             $response = curl_getinfo($ch, CURLINFO_EFFECTIVE_URL);
         }
         curl_close($ch);
@@ -154,7 +132,7 @@ class HttpUtil
 
     /**
      * abstract the request content-type behind one single method,
-     * since Goutte does not natively support this
+     * since HttpBrowser does not natively support this
      * * Lưu ý: chỉ đọc Cookie, dùng g_goutteRequestLogin, g_goutteSubmitForm để lưu cookie
      *
      * @param string $method HTTP method (GET/POST/PUT..)
@@ -163,7 +141,7 @@ class HttpUtil
      *                           or in JSON format.
      * @param null $cookie_jar
      * @param array $options
-     * @return Client
+     * @return HttpBrowser
      */
     public static function g_goutteRequest($method, $url, $parameters=[], $cookie_jar=null, $options=['redirect' => false, 'isRequestJson' => false, 'headers' => [], 'proxy' => null, 'useIpv6' => false])
     {
@@ -203,6 +181,12 @@ class HttpUtil
             $config['force_ip_resolve'] = 'v6';
         }
 
+        // Set the default User-Agent
+        $config['headers'] = [
+            'User-Agent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 11_2_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.141 Safari/537.36 Edg/87.0.664.75',
+            'Accept-Language' => 'en'
+        ];
+
         $cookies = null;
         if (isset($cookie_jar)) {
             $cookies = self::goutteSetCookieJar($cookie_jar);
@@ -213,31 +197,27 @@ class HttpUtil
             $url .= '?'.http_build_query($parameters);
         }
 
-        $guzzleClient = new GuzzleClient($config);
-        $client       = new Client([], null, $cookies);
-        $client->setClient($guzzleClient);
-        $client->setHeader('User-Agent', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 11_2_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.141 Safari/537.36 Edg/87.0.664.75');
-        $client->setHeader('Accept-Language', 'en');
+        $browser = new HttpBrowser(HttpClient::createForBaseUri($url, $config), null, $cookies);
 
+        // Set custom headers if provided
         if (isset($options['headers']) && !empty($options['headers'])) {
             foreach ($options['headers'] as $key => $value) {
-                $client->setHeader($key, $value);
+                $browser->setServerParameter('HTTP_' . strtoupper(str_replace('-', '_', $key)), $value);
             }
         }
 
+        // Handle request with different content types
         if (isset($options['isRequestJson']) && $options['isRequestJson'] == true) {
-            $client->request($method, $url, array(), array(), array('HTTP_CONTENT_TYPE' => 'application/json'), json_encode($parameters));
+            $browser->setServerParameter('HTTP_CONTENT_TYPE', 'application/json');
+            $browser->request($method, $url, [], [], ['HTTP_CONTENT_TYPE' => 'application/json'], json_encode($parameters));
         } elseif (isset($options['headers']['Content-Type']) && $options['headers']['Content-Type'] === 'text/plain') {
-            $client->request($method, $url, array(), array(), array('HTTP_CONTENT_TYPE' => 'text/plain'), $parameters);
+            $browser->setServerParameter('HTTP_CONTENT_TYPE', 'text/plain');
+            $browser->request($method, $url, [], [], ['HTTP_CONTENT_TYPE' => 'text/plain'], $parameters);
         } else {
-            $client->request($method, $url, $parameters);
+            $browser->request($method, $url, $parameters);
         }
 
-//        if (isset($cookie_jar)) {
-//            self::goutteSaveCookieJar($client, $cookie_jar);
-//        }
-
-        return $client;
+        return $browser;
     }
 
     /**
@@ -286,38 +266,38 @@ class HttpUtil
      * Dùng để login và ghi Cookie
      *
      * abstract the request content-type behind one single method,
-     * since Goutte does not natively support this
+     * since HttpBrowser does not natively support this
      * @param string $method HTTP method (GET/POST/PUT..)
      * @param string $url URL to load
      * @param array $parameters HTTP parameters (POST, etc) to be sent URLencoded
      *                           or in JSON format.
      * @param null $cookie_jar
      * @param array $options
-     * @return Client
+     * @return HttpBrowser
      */
     public static function g_goutteRequestLogin($method, $url, $parameters, $cookie_jar, $options=['redirect' => false, 'isRequestJson' => false, 'headers' => [], 'proxy' => null, 'useIpv6' => false])
     {
-        $client = self::g_goutteRequest($method, $url, $parameters, $cookie_jar, $options);
+        $browser = self::g_goutteRequest($method, $url, $parameters, $cookie_jar, $options);
 
         // Save cookies to file
         if (isset($cookie_jar)) {
-            self::goutteSaveCookieJar($client, $cookie_jar);
+            self::goutteSaveCookieJar($browser, $cookie_jar);
         }
 
-        return $client;
+        return $browser;
     }
 
     /**
      * Hàm lưu cookie vào File
      * EditThisCookie Chrome Extension
      *
-     * @param Client $client
+     * @param HttpBrowser $browser
      * @param $cookie_jar
      */
-    public static function goutteSaveCookieJar($client, $cookie_jar)
+    public static function goutteSaveCookieJar($browser, $cookie_jar)
     {
         $cookie_array = array();
-        $cookieJar    = $client->getCookieJar();
+        $cookieJar    = $browser->getCookieJar();
         $cookies      = $cookieJar->all();
 
         if ($cookies) {
@@ -356,20 +336,26 @@ class HttpUtil
      * @param null $proxy
      * @param string $button_name : button submit form. Ex: <button>button_name</button>
      * @param string $form_filter : id, class hoặc attribute của form. Ex: form.login-form hoặc #login-form
-     * @return Client
+     * @return HttpBrowser
      */
     public static function g_goutteSubmitForm($url, $params, $cookie_jar, $proxy = null, $button_name = null, $form_filter = null)
     {
-        $config = array('debug' => false, 'verify' => false);
+        $httpClientOptions = [];
         if (isset($proxy)) {
-            $config['proxy'] = ['http' => $proxy, 'https' => $proxy];
+            $httpClientOptions['proxy'] = $proxy;
         }
-        $guzzleClient = new GuzzleClient($config);
-        $client       = new Client();
-        $client->setClient($guzzleClient);
-        $client->setHeader('User-Agent', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 11_2_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.141 Safari/537.36 Edg/87.0.664.75');
-        $client->setHeader('Accept-Language', 'en');
-        $crawler = $client->request('GET', $url);
+
+        $browser = new HttpBrowser(HttpClient::create(array_merge([
+            'verify_peer' => false,
+            'verify_host' => false,
+            'headers' => [
+                'User-Agent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 11_2_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.141 Safari/537.36 Edg/87.0.664.75',
+                'Accept-Language' => 'en'
+            ]
+        ], $httpClientOptions)));
+
+        $crawler = $browser->request('GET', $url);
+
         if (isset($form_filter)) {
             $form = $crawler->filter($form_filter)->form();
         } else if (isset($button_name)) {
@@ -377,11 +363,12 @@ class HttpUtil
         } else {
             $form = $crawler->filter('form')->form();
         }
-        $client->submit($form, $params);
 
-        self::goutteSaveCookieJar($client, $cookie_jar);
+        $browser->submit($form, $params);
 
-        return $client;
+        self::goutteSaveCookieJar($browser, $cookie_jar);
+
+        return $browser;
     }
 
     /**
@@ -407,7 +394,6 @@ class HttpUtil
             ]
         ]);
         $file_headers = get_headers($url, true, $context);
-        //$file_headers = self::g_getHeader($url, 2);
 
         // when server not found
         if (empty($file_headers)) {
@@ -473,8 +459,6 @@ class HttpUtil
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_HEADER, 1);
         curl_setopt($ch, CURLOPT_NOBODY, true);
-        // Tell cURL that it should only spend 10 seconds
-        // trying to connect to the URL in question.
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $timeout);
 
         $response = curl_exec($ch);
@@ -482,10 +466,9 @@ class HttpUtil
         // Return headers seperatly from the Response Body
         $header_size = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
         $headers     = substr($response, 0, $header_size);
-        // $body = substr($response, $header_size);
         curl_close($ch);
 
-        $headers = explode("\r\n", $headers); // The seperator used in the Response Header is CRLF (Aka. \r\n)
+        $headers = explode("\r\n", $headers);
         $headers = array_filter($headers);
 
         return $headers;
@@ -549,7 +532,6 @@ class HttpUtil
         $info = curl_getinfo($ch);
         $respCode = $info['http_code'];
 
-        // Đóng CURL
         curl_close($ch);
 
         return [$respContent, $respCode];

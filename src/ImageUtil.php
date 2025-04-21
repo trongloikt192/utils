@@ -5,7 +5,7 @@ namespace trongloikt192\Utils;
 
 use GuzzleHttp\Client;
 use Illuminate\Support\Facades\File;
-use ImageOptimizer\OptimizerFactory;
+use Spatie\ImageOptimizer\OptimizerChainFactory;
 use Intervention\Image\ImageManagerStatic as Image;
 use trongloikt192\Utils\Exceptions\UtilException;
 
@@ -126,8 +126,7 @@ class ImageUtil
             // Compress image -> kb size smaller 10 - 70%
             // optimized file overwrites original one
             rename($imgPath, $destPath);
-            $factory = new OptimizerFactory();
-            $optimizer = $factory->get();
+            $optimizer = OptimizerChainFactory::create();
             $optimizer->optimize($destPath);
         }
     }
