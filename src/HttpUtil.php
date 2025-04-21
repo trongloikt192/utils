@@ -147,17 +147,20 @@ class HttpUtil
     {
         $redirect_url = '';
         $config       = array(
-            'debug'       => false,
             'timeout'     => 60,
-            'http_errors' => false,
-            'verify'      => false,
-            'cookies'     => true
+            'verify_peer' => false,
+            'verify_host' => false,
+            'headers'     => [
+                'User-Agent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 11_2_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.141 Safari/537.36 Edg/87.0.664.75',
+                'Accept-Language' => 'en'
+            ]
         );
 
         if (isset($options['proxy']) && !empty($options['proxy'])) {
             $config['proxy'] = ['http' => $options['proxy'], 'https' => $options['proxy']];
         }
 
+        // TODO: Not working on v10x
         if (isset($options['redirect']) && $options['redirect'] == true) {
             $config['allow_redirects'] = false;
             $config['on_headers']      = function (ResponseInterface $response) use (&$redirect_url) {
@@ -177,15 +180,10 @@ class HttpUtil
             };
         }
 
+        // TODO: Not working on v10x
         if (isset($options['useIpv6']) && $options['useIpv6'] == true) {
             $config['force_ip_resolve'] = 'v6';
         }
-
-        // Set the default User-Agent
-        $config['headers'] = [
-            'User-Agent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 11_2_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.141 Safari/537.36 Edg/87.0.664.75',
-            'Accept-Language' => 'en'
-        ];
 
         $cookies = null;
         if (isset($cookie_jar)) {
@@ -340,19 +338,19 @@ class HttpUtil
      */
     public static function g_goutteSubmitForm($url, $params, $cookie_jar, $proxy = null, $button_name = null, $form_filter = null)
     {
-        $httpClientOptions = [];
-        if (isset($proxy)) {
-            $httpClientOptions['proxy'] = $proxy;
-        }
-
-        $browser = new HttpBrowser(HttpClient::create(array_merge([
+        $httpClientOptions = [
             'verify_peer' => false,
             'verify_host' => false,
             'headers' => [
                 'User-Agent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 11_2_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.141 Safari/537.36 Edg/87.0.664.75',
                 'Accept-Language' => 'en'
             ]
-        ], $httpClientOptions)));
+        ];
+        if (isset($proxy)) {
+            $httpClientOptions['proxy'] = $proxy;
+        }
+
+        $browser = new HttpBrowser(HttpClient::create($httpClientOptions));
 
         $crawler = $browser->request('GET', $url);
 
