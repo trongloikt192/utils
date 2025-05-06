@@ -295,6 +295,8 @@ class RcloneUtil
                 return HOST_NITROFLARE_COM;
             case RCLONE_TYPE_RAPIDGATOR:
                 return HOST_RAPIDGATOR_NET;
+            case RCLONE_TYPE_WEBDAV:
+                return HOST_WEBDAV;
         }
 
         return null;
@@ -317,6 +319,8 @@ class RcloneUtil
                 return RCLONE_TYPE_NITROFLARE;
             case HOST_RAPIDGATOR_NET:
                 return RCLONE_TYPE_RAPIDGATOR;
+            case HOST_WEBDAV:
+                return RCLONE_TYPE_WEBDAV;
         }
 
         return null;

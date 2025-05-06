@@ -30,6 +30,7 @@ const HOST_NHACCUATUI_COM   = 'nhaccuatui.com';
 const HOST_GOOGLE_DRIVE_COM = 'drive.google.com';
 const HOST_ONEDRIVE_COM     = 'sharepoint.com';
 const HOST_VNLINKS_NET      = 'vnlinks.net';
+const HOST_WEBDAV           = 'webdav';
 
 // Get short-url
 const NEXT_SHORTURL_NUMBER_PREFIX = 'NextShorturl:';                                                                                                                                                                                                                // tomorrow
