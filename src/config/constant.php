@@ -25,6 +25,7 @@ const RCLONE_TYPE_ONEDRIVE   = 'onedrive';
 const RCLONE_TYPE_1FICHIER   = 'fichier';
 const RCLONE_TYPE_NITROFLARE = 'nitroflare';
 const RCLONE_TYPE_RAPIDGATOR = 'rapidgator';
+const RCLONE_TYPE_NEXTCLOUD  = 'nextcloud';
 
 // Log levels
 const LOG_LEVEL_EMERGENCY = 0;
