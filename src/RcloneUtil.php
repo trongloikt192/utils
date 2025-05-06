@@ -96,6 +96,14 @@ class RcloneUtil
                 $arr[] = 'drive_id = ' . $this->entity->onedrive_id;
                 $arr[] = 'drive_type = ' . $this->entity->onedrive_type;
                 break;
+
+            case RCLONE_TYPE_WEBDAV:
+                $arr[] = 'type = ' . RCLONE_TYPE_WEBDAV;
+                $arr[] = 'url = ' . $this->entity->webdav_url;
+                $arr[] = 'vendor = ' . $this->entity->webdav_vendor;
+                $arr[] = 'user = ' . $this->entity->email;
+                $arr[] = 'pass = ' . $this->entity->password;
+                break;
         }
 
         // Get config path
