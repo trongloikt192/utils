@@ -230,25 +230,76 @@ class RcloneUtil
     /**
      * get token gdrive only
      *
+     * @param bool $refreshBefore
      * @return array
+     * @throws UtilException
      */
     public function getTokenGdrive($refreshBefore = false)
     {
         // refresh new token
         if ($refreshBefore == true) {
-            $this->about();
+            $this->refreshToken();
         }
 
-        // get token from rclone file
-        $cmd   = 'rclone config dump';
-        $out   = shell_exec($cmd);
-        $json  = json_decode($out, true);
-        $token = $json[$this->entity->rclone_name]['token'];
+        return $this->getToken();
+    }
 
-        // set token to entity
+    /**
+     * Refresh token and return the new token
+     *
+     * @throws UtilException
+     */
+    public function refreshToken()
+    {
+        $log = '/var/tmp/rclone_['. $this->entity->rclone_name .']_'. date('Ymd') .'.log';
+
+        // Force a refresh of the token by calling rclone
+        switch ($this->entity->rclone_type) {
+            case RCLONE_TYPE_GDRIVE:
+                $this->about();
+                break;
+
+            case RCLONE_TYPE_ONEDRIVE:
+                // Run about command with refresh-token flag to force refresh
+                $cmd = sprintf('rclone config reconnect %s: --log-level DEBUG --log-file %s', $this->entity->rclone_name, $log);
+                $out = shell_exec($cmd);
+                if (strlen(trim($out)) > 0 && strpos($out, 'error') !== false) {
+                    throw new UtilException($out);
+                }
+                break;
+
+            case RCLONE_TYPE_1FICHIER:
+            case RCLONE_TYPE_WEBDAV:
+                // These may have different refresh mechanisms
+                throw new UtilException("Token refresh not supported for this storage type: " . $rcloneType);
+                break;
+        }
+
+        $token = $this->getToken();
+        if (empty($token)) {
+            throw new UtilException("Failed to refresh token for " . $this->entity->rclone_name);
+        }
+
         $this->entity->token = $token;
+    }
 
-        return json_decode($token, true);
+    /**
+     * @return mixed
+     */
+    public function getToken()
+    {
+        // Get the updated token from the config
+        $cmd = 'rclone config dump';
+        $out = shell_exec($cmd);
+        $json = json_decode($out, true);
+        $token = $json[$this->entity->rclone_name]['token'] ?? null;
+
+        // For Google Drive and OneDrive, token is a JSON string
+        if (in_array($this->entity->rclone_type, [RCLONE_TYPE_GDRIVE, RCLONE_TYPE_ONEDRIVE])) {
+            return json_decode($token, true);
+        }
+
+        return $token;
     }
 
     /**
