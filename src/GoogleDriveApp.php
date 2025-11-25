@@ -642,14 +642,13 @@ class GoogleDriveApp
      */
     public function getUploadUrl($fileName, $fileSize, $mimeType)
     {
-        $signedURL   = null;
-        $path        = 'https://www.googleapis.com/upload/drive/v3/files?uploadType=resumable&access_token=:accessToken';
+        $reqURL      = 'https://www.googleapis.com/upload/drive/v3/files?uploadType=resumable';
         $accessToken = $this->_Client->getAccessToken();
 
-        $reqURL     = str_replace(':accessToken', $accessToken['access_token'], $path);
         $reqParams  = ['name' => $fileName];
         $reqOptions = [
             'headers'       => [
+                'Authorization'           => 'Bearer ' . $accessToken['access_token'],
                 'Content-Type'            => 'application/json; charset=UTF-8',
                 'X-Upload-Content-Type'   => $mimeType,
                 'X-Upload-Content-Length' => $fileSize,
